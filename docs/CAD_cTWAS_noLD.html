@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Xizhi Xu" />
+
+
+<title>CAD cTWAS (no LD)</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.22/datatables.js"></script>
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CAD_cTWAS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/xizhixu1016/CAD_cTWAS">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">CAD cTWAS (no LD)</h1>
+<h4 class="author">Xizhi Xu</h4>
+<h4 class="date">9/26/2024</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2024-10-04
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>CAD_cTWAS/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version 1.7.1). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20241004code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20241004)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20241004code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20241004)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree7eab91ecfb3ba7de8b792bf31f513c6d336ee811targetblank7eab91ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/7eab91ecfb3ba7de8b792bf31f513c6d336ee811" target="_blank">7eab91e</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree7eab91ecfb3ba7de8b792bf31f513c6d336ee811targetblank7eab91ea" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/7eab91ecfb3ba7de8b792bf31f513c6d336ee811" target="_blank">7eab91e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Untracked files:
+    Untracked:  ctwas_res_noLD.RData
+    Untracked:  res.RData
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/CAD_cTWAS_noLD.Rmd</code>) and HTML (<code>docs/CAD_cTWAS_noLD.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/7eab91ecfb3ba7de8b792bf31f513c6d336ee811/analysis/CAD_cTWAS_noLD.Rmd" target="_blank">7eab91e</a>
+</td>
+<td>
+Xizhi
+</td>
+<td>
+2024-10-04
+</td>
+<td>
+Add my first analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="set-up" class="section level2">
+<h2>Set up</h2>
+<p>Load the required packages.</p>
+<pre class="r"><code>### Set up
+# setwd(&quot;xizhi_xin_midway3/cTWAS_2024&quot;)
+library(data.table)
+library(ctwas)
+library(RSQLite)
+library(EnsDb.Hsapiens.v75)
+library(workflowr)</code></pre>
+</div>
+<div id="prepare-the-input-gwas-summary-statistics-reference-region-info-snp-info-prediction-model-weights" class="section level2">
+<h2>Prepare the input: GWAS summary statistics, Reference (region info, SNP info), Prediction model (weights)</h2>
+<div id="gwas-sum-stats" class="section level3">
+<h3>GWAS Sum Stats</h3>
+<p>The CAD summary statistics data I used was accessed from website: <a href="https://www.nature.com/articles/s41588-022-01233-6" class="uri">https://www.nature.com/articles/s41588-022-01233-6</a> . I filtered the original data to maintain the MAF between (0.01, 0.99).</p>
+<pre class="r"><code>gwas_data &lt;- fread(&quot;GCST90132314_buildGRCh37.tsv&quot;, sep = &quot;\t&quot;)
+
+# Filter to remain the variants with MAF (0.01, 0.99) 
+gwas_filter &lt;- gwas_data[gwas_data$effect_allele_frequency &gt; 0.01, ]
+gwas_filter &lt;- gwas_filter[gwas_filter$effect_allele_frequency &lt; 0.99, ]
+gwas_filter$z &lt;- gwas_filter$beta / gwas_filter$standard_error
+
+gwas_map &lt;- gwas_filter[, c(&quot;chromosome&quot;, &quot;base_pair_location&quot;, &quot;z&quot;)]</code></pre>
+</div>
+<div id="reference" class="section level3">
+<h3>Reference</h3>
+<p>Here I got the region info from the package cTWAS. SNP info was also accessed from reference panel of cTWAS website. Another thing to notice: genome build needs to be matched.</p>
+<pre class="r"><code># Region info
+region_file &lt;- system.file(&quot;extdata/ldetect&quot;, &quot;EUR.b37.ldetect.regions.RDS&quot;, package = &quot;ctwas&quot;)
+region_info &lt;- readRDS(region_file)
+
+# SNP info
+ref_snp_info &lt;- fread(&quot;ukb_b37_0.1_var_info.Rvar&quot;, sep = &quot;\t&quot;) # 9324048
+class(ref_snp_info) &lt;- &quot;data.frame&quot;
+
+res &lt;- create_snp_map(region_info, ref_snp_info, ncore = 6)
+region_info &lt;- res$region_info
+snp_map &lt;- res$snp_map
+
+head(region_info)
+
+ref_data &lt;- read.table(&quot;ukb_b37_0.1_var_info.Rvar&quot;, header = TRUE, sep = &quot;\t&quot;)
+
+colnames(gwas_map)[colnames(gwas_map) == &quot;base_pair_location&quot;] &lt;- &quot;pos&quot;
+colnames(gwas_map)[colnames(gwas_map) == &quot;chromosome&quot;] &lt;- &quot;chrom&quot;
+head(gwas_map)
+
+# Harmonize GWAS summary statistics.
+z_snp &lt;- merge(gwas_map, ref_data, by = c(&quot;pos&quot;, &quot;chrom&quot;)) # 9155485
+z_snp &lt;- z_snp[, c(&quot;id&quot;, &quot;alt&quot;, &quot;ref&quot;, &quot;z&quot;)]
+colnames(z_snp)[colnames(z_snp) == &quot;alt&quot;] &lt;- &quot;A1&quot;
+colnames(z_snp)[colnames(z_snp) == &quot;ref&quot;] &lt;- &quot;A2&quot;
+head(z_snp)
+
+z_snp &lt;- preprocess_z_snp(z_snp, snp_map)</code></pre>
+</div>
+<div id="prediction-model" class="section level3">
+<h3>Prediction model</h3>
+<p>The prediction model was accessed from GTEx: mashr_eqtl. Here, I used artery aorta as example.</p>
+<pre class="r"><code>artery_file &lt;- &quot;mashr_eqtl/eqtl/mashr/mashr_Artery_Aorta.db&quot;
+artery &lt;- preprocess_weights(artery_file,
+                                    region_info,
+                                    z_snp$id,
+                                    snp_map,
+                                    type = &quot;expression&quot;,
+                                    context = &quot;artery&quot;,
+                                    ncore = 6)</code></pre>
+</div>
+</div>
+<div id="run-ctwas" class="section level2">
+<h2>Run cTWAS</h2>
+<p>After all the input files ready, run the cTWAS.</p>
+<pre class="r"><code># # ctwas_res &lt;- ctwas_sumstats_noLD(z_snp,
+#                                  artery,
+#                                  region_info,
+#                                  snp_map,
+#                                  thin = 0.1, 
+#                                  ncore = 6)
+
+load(&quot;ctwas_res_noLD.RData&quot;)
+
+z_gene &lt;- ctwas_res$z_gene
+param &lt;- ctwas_res$param
+finemap_res &lt;- ctwas_res$finemap_res
+boundary_genes &lt;- ctwas_res$boundary_genes
+region_data &lt;- ctwas_res$region_data
+screen_res &lt;- ctwas_res$screen_res</code></pre>
+<div id="explore-and-interpret-the-results" class="section level3">
+<h3>Explore and interpret the results</h3>
+<p>Create the convergence plots:</p>
+<pre class="r"><code>gwas_n &lt;- 1165690
+make_convergence_plots(param, gwas_n)</code></pre>
+<p><img src="figure/CAD_cTWAS_noLD.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Estimate the parameters:</p>
+<pre class="r"><code>ctwas_parameters &lt;- summarize_param(param, gwas_n)
+ctwas_parameters</code></pre>
+<pre><code>$group_size
+artery|expression               SNP 
+            10447           7864770 
+
+$group_prior
+artery|expression               SNP 
+      0.013811188       0.000221933 
+
+$group_prior_var
+artery|expression               SNP 
+         34.77007          10.85988 
+
+$enrichment
+[1] 62.23135
+
+$group_pve
+artery|expression               SNP 
+      0.004303731       0.016261100 
+
+$total_pve
+[1] 0.02056483
+
+$attributable_pve
+artery|expression               SNP 
+        0.2092762         0.7907238 </code></pre>
+<pre class="r"><code>finemap_res$molecular_id &lt;- get_molecular_ids(finemap_res)</code></pre>
+<p>Add p-values to finemapping results:</p>
+<pre class="r"><code>finemap_res$pval &lt;- z2p(finemap_res$z)
+head(finemap_res)</code></pre>
+<pre><code>                                    id       type context             group
+1 ENSG00000159423.16|artery_expression expression  artery artery|expression
+2 ENSG00000169991.10|artery_expression expression  artery artery|expression
+3 ENSG00000127481.14|artery_expression expression  artery artery|expression
+4  ENSG00000053372.4|artery_expression expression  artery artery|expression
+5 ENSG00000053371.12|artery_expression expression  artery artery|expression
+6 ENSG00000040487.12|artery_expression expression  artery artery|expression
+            region_id          z    susie_pip       mu2 cs_index
+1 1_18662899_20469149  3.2951395 0.0857924530 11.231377        1
+2 1_18662899_20469149 -0.8490555 0.0006219497  1.653195        1
+3 1_18662899_20469149  0.7283226 0.0005669667  1.473253        1
+4 1_18662899_20469149  0.8308470 0.0006127718  1.624293        1
+5 1_18662899_20469149  1.0876908 0.0007785918  2.089891        1
+6 1_18662899_20469149 -1.3404172 0.0010491470  2.669707        1
+        molecular_id         pval
+1 ENSG00000159423.16 0.0009837284
+2 ENSG00000169991.10 0.3958503982
+3 ENSG00000127481.14 0.4664161138
+4  ENSG00000053372.4 0.4060600775
+5 ENSG00000053371.12 0.2767316118
+6 ENSG00000040487.12 0.1801097504</code></pre>
+<p>View the results: mol traits, PIP &gt; 0.8</p>
+<pre class="r"><code>finemap_sig &lt;- subset(finemap_res, group != &quot;SNP&quot; &amp; susie_pip &gt; 0.8 &amp; cs_index != 0) # 20 sig genes, 4 sig SNPs</code></pre>
+<p>Compute gene PIPs:</p>
+<pre class="r"><code>combined_pip_by_context &lt;- combine_gene_pips(finemap_res, 
+                                             group_by = &quot;molecular_id&quot;,
+                                             by = &quot;context&quot;,
+                                             method = &quot;sum&quot;,
+                                             filter_cs = TRUE)</code></pre>
+<pre><code>2024-10-04 17:03:56 INFO::Limit gene results to credible sets</code></pre>
+<pre class="r"><code>combined_pip_by_context_sig &lt;- subset(combined_pip_by_context, combined_pip &gt; 0.8)
+
+DT::datatable(combined_pip_by_context_sig,caption = htmltools::tags$caption( style = &#39;caption-side: topleft; text-align = left; color:black;&#39;,&#39;Significant genes&#39;),options = list(pageLength = 10) )</code></pre>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-232a8e63d6aacd296363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-232a8e63d6aacd296363">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: topleft; text-align = left; color:black;\">Significant genes<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["ENSG00000273611.4","ENSG00000112137.17","ENSG00000118526.6","ENSG00000182511.11","ENSG00000112655.15","ENSG00000107798.17","ENSG00000136715.17","ENSG00000158186.12","ENSG00000133433.10","ENSG00000087237.10","ENSG00000142039.3","ENSG00000119718.10","ENSG00000118257.16","ENSG00000099889.13","ENSG00000167549.18","ENSG00000183386.9","ENSG00000113758.13","ENSG00000137075.17","ENSG00000171443.6","ENSG00000141568.20"],[0.9999999994043488,0.9999999863050577,0.9944339808205555,0.994374883319987,0.9886410148525008,0.9852857172148063,0.9757377223838302,0.9740156758023055,0.973169085783299,0.9655732235209693,0.9465745840097864,0.9375295468688839,0.9272332178772659,0.9136816732223029,0.8703933218746609,0.8588664767713722,0.8184332842740982,0.8118366599769206,0.8020103903395613,0.8017272250143889],[0.9999999994043488,0.9999999863050577,0.9944339808205555,0.994374883319987,0.9886410148525008,0.9852857172148063,0.9757377223838302,0.9740156758023055,0.973169085783299,0.9655732235209693,0.9465745840097864,0.9375295468688839,0.9272332178772659,0.9136816732223029,0.8703933218746609,0.8588664767713722,0.8184332842740982,0.8118366599769206,0.8020103903395613,0.8017272250143889]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>molecular_id<\/th>\n      <th>artery_pip<\/th>\n      <th>combined_pip<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Add gene annotations:(make sure the genome build match)</p>
+<pre class="r"><code>ens_db &lt;- EnsDb.Hsapiens.v75
+finemap_gene_res &lt;- subset(finemap_res, group != &quot;SNP&quot;)
+gene_ids &lt;- unique(finemap_gene_res$molecular_id)
+gene_annot &lt;- get_gene_annot_from_ens_db(ens_db, gene_ids)</code></pre>
+<pre><code>2024-10-04 17:03:56 INFO::Remove 16 gene_ids not found in ens_db.</code></pre>
+<pre class="r"><code>colnames(gene_annot)[colnames(gene_annot) == &quot;gene_id&quot;] &lt;- &quot;molecular_id&quot;
+head(gene_annot)</code></pre>
+<pre><code>        molecular_id gene_name      gene_type chrom    start      end
+1 ENSG00000159423.16   ALDH4A1 protein_coding     1 19197926 19229275
+2 ENSG00000169991.10     IFFO2 protein_coding     1 19230775 19283180
+3 ENSG00000127481.14      UBR4 protein_coding     1 19401000 19536770
+4  ENSG00000053372.4     MRTO4 protein_coding     1 19578033 19586622
+5 ENSG00000053371.12    AKR7A2 protein_coding     1 19630459 19638640
+6 ENSG00000040487.12     PQLC2 protein_coding     1 19638820 19655794</code></pre>
+<pre class="r"><code>load(&quot;res.RData&quot;)
+snp_map &lt;- res$snp_map
+# Update finemap results with gene annot
+finemap_res &lt;- anno_finemap_res(finemap_res,
+                                snp_map = snp_map,
+                                mapping_table = gene_annot,
+                                add_gene_annot = TRUE,
+                                map_by = &quot;molecular_id&quot;,
+                                drop_unmapped = TRUE,
+                                add_position = TRUE,
+                                use_gene_pos = &quot;mid&quot;)</code></pre>
+<pre><code>2024-10-04 17:04:26 INFO::Annotating fine-mapping result ...
+2024-10-04 17:04:26 INFO::Map molecular traits to genes
+2024-10-04 17:04:26 INFO::Drop 16 unmapped molecular IDs
+2024-10-04 17:04:27 INFO::Add gene positions
+2024-10-04 17:04:27 INFO::Add SNP positions</code></pre>
+<pre class="r"><code>finemap_res_sig &lt;- subset(finemap_res, group != &quot;SNP&quot; &amp; gene_type == &quot;protein_coding&quot; &amp; susie_pip &gt; 0.8 &amp; cs_index != 0)
+
+DT::datatable(finemap_res_sig,caption = htmltools::tags$caption( style = &#39;caption-side: topleft; text-align = left; color:black;&#39;,&#39;Significant protein-coding genes&#39;),options = list(pageLength = 10) )</code></pre>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2112c1f1dbc2c6427f4c" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2112c1f1dbc2c6427f4c">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: topleft; text-align = left; color:black;\">Significant protein-coding genes<\/caption>","data":[["24","110","120","169","229","235","269","295","375","386","675","752","811","902","964","1097","1140","1206","1238"],["ENSG00000183386.9|artery_expression","ENSG00000136715.17|artery_expression","ENSG00000118257.16|artery_expression","ENSG00000158186.12|artery_expression","ENSG00000113758.13|artery_expression","ENSG00000112137.17|artery_expression","ENSG00000112655.15|artery_expression","ENSG00000118526.6|artery_expression","ENSG00000137075.17|artery_expression","ENSG00000107798.17|artery_expression","ENSG00000119718.10|artery_expression","ENSG00000182511.11|artery_expression","ENSG00000087237.10|artery_expression","ENSG00000167549.18|artery_expression","ENSG00000141568.20|artery_expression","ENSG00000142039.3|artery_expression","ENSG00000171443.6|artery_expression","ENSG00000099889.13|artery_expression","ENSG00000133433.10|artery_expression"],["expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression","expression"],["artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery","artery"],["artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression","artery|expression"],["1_37549183_38731847","2_128034347_129474441","2_205799241_206735704","3_137371083_139954597","5_175450595_177251507","6_11790816_13209388","6_42038721_43756169","6_132765669_134244243","9_34642243_36743283","10_89127064_91013381","14_72889615_76444767","15_90475551_92164392","16_55903774_57664330","17_27334244_29786491","17_80034408_81194908","19_40984601_42131573","19_55728080_57521335","22_19912358_22357325","22_23712647_24984204"],[6.633870485055914,5.567700598040783,-4.452713959902246,-8.778096024375058,4.833515681576078,-22.7047586153854,-6.180534334073398,-11.28712877513667,-4.153758034478779,-10.90450535565776,6.95024067499966,11.90468531223122,-6.772756041508129,6.58928944846724,-3.8490997323873,9.051407355881695,-4.108302187623105,5.650599963450985,-6.269548147605076],[0.8588664767713722,0.9757377223838302,0.9272332178772659,0.9740156758023055,0.8184332842740982,0.9999999863050577,0.9886410148525008,0.9944339808205555,0.8118366599769206,0.9852857172148063,0.9375295468688839,0.994374883319987,0.9655732235209693,0.8703933218746609,0.8017272250143889,0.9465745840097864,0.8020103903395613,0.9136816732223029,0.973169085783299],[42.55405810989192,30.26230822418517,19.70563933083069,73.77888714840222,23.04689624609068,488.0576838484046,37.06509463683422,121.347655636041,17.27453345077511,113.3247371370707,46.61473403048505,134.880310081824,44.31339148934966,41.99705584482404,14.9708136039341,78.38323824587694,16.9196794895927,31.14102683708878,38.11222604024452],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],["ENSG00000183386.9","ENSG00000136715.17","ENSG00000118257.16","ENSG00000158186.12","ENSG00000113758.13","ENSG00000112137.17","ENSG00000112655.15","ENSG00000118526.6","ENSG00000137075.17","ENSG00000107798.17","ENSG00000119718.10","ENSG00000182511.11","ENSG00000087237.10","ENSG00000167549.18","ENSG00000141568.20","ENSG00000142039.3","ENSG00000171443.6","ENSG00000099889.13","ENSG00000133433.10"],[3.26996776629498e-11,2.581228438112767e-08,8.479167840306438e-06,1.662652924361874e-18,1.341427069252524e-06,4.020363419219014e-114,6.388499997692151e-10,1.51918553805017e-29,3.270590177177585e-05,1.096882027994512e-27,3.646635491062325e-12,1.118845822262273e-32,1.263519150773118e-11,4.419364704322868e-11,0.0001185527349510479,1.411373788902543e-19,3.985783773560399e-05,1.598887928026812e-08,3.620973197954315e-10],["FHL3","SAP130","NRP2","MRAS","DBN1","PHACTR1","PTK7","TCF21","RNF38","LIPA","EIF2B2","FES","CETP","CORO6","FOXK2","CCDC97","ZNF524","ARVCF","GSTT2B"],["protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding","protein_coding"],["1","2","2","3","5","6","6","6","9","10","14","15","16","17","17","19","19","22","22"],[38462442,128698791,206546714,138066539,176883609,12717893,43044006,134210276,36336393,90973326,75469614,91426925,56995762,27941774,80477589,41816094,56111388,19957419,24299601],[38471278,128785694,206662857,138124375,176901402,13288645,43129457,134216691,36487545,91174314,75476292,91439006,57017757,27949925,80602538,41830788,56114504,20004331,24303373],[38466860,128742242,206604786,138095457,176892506,13003269,43086732,134213484,36411969,91073820,75472953,91432966,57006760,27945850,80540064,41823441,56112946,19980875,24301487]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>id<\/th>\n      <th>type<\/th>\n      <th>context<\/th>\n      <th>group<\/th>\n      <th>region_id<\/th>\n      <th>z<\/th>\n      <th>susie_pip<\/th>\n      <th>mu2<\/th>\n      <th>cs_index<\/th>\n      <th>molecular_id<\/th>\n      <th>pval<\/th>\n      <th>gene_name<\/th>\n      <th>gene_type<\/th>\n      <th>chrom<\/th>\n      <th>start<\/th>\n      <th>end<\/th>\n      <th>pos<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[6,7,8,9,11,15,16,17]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>combined_pip_by_type &lt;- combine_gene_pips(finemap_res,
+                                          group_by = &quot;gene_name&quot;,
+                                          by = &quot;type&quot;,
+                                          method = &quot;combine_cs&quot;,
+                                          filter_cs = TRUE)</code></pre>
+<pre><code>2024-10-04 17:04:38 INFO::Limit gene results to credible sets</code></pre>
+<pre class="r"><code>subset(combined_pip_by_type, combined_pip &gt; 0.8)</code></pre>
+<pre><code>   gene_name expression_pip combined_pip
+1    PHACTR1      1.0000000    1.0000000
+2      TCF21      0.9944340    0.9944340
+3        FES      0.9943749    0.9943749
+4       PTK7      0.9886410    0.9886410
+5       LIPA      0.9852857    0.9852857
+6     SAP130      0.9757377    0.9757377
+7       MRAS      0.9740157    0.9740157
+8     GSTT2B      0.9731691    0.9731691
+9       CETP      0.9655732    0.9655732
+10    CCDC97      0.9465746    0.9465746
+11    EIF2B2      0.9375295    0.9375295
+12      NRP2      0.9272332    0.9272332
+13     ARVCF      0.9136817    0.9136817
+14     CORO6      0.8703933    0.8703933
+15      FHL3      0.8588665    0.8588665
+16      DBN1      0.8184333    0.8184333
+17     RNF38      0.8118367    0.8118367
+18    ZNF524      0.8020104    0.8020104
+19     FOXK2      0.8017272    0.8017272</code></pre>
+</div>
+<div id="visualize-by-the-gene-plots" class="section level3">
+<h3>Visualize by the gene plots</h3>
+<pre class="r"><code>make_locusplot(finemap_res,
+               region_id = &quot;1_18662899_20469149&quot;,
+               ens_db = ens_db,
+               highlight_pip = 0.8,
+               filter_protein_coding_genes = TRUE,
+               filter_cs = TRUE,
+               color_pval_by = &quot;cs&quot;,
+               color_pip_by = &quot;cs&quot;)</code></pre>
+<pre><code>2024-10-04 17:04:38 INFO::Limit to protein coding genes
+2024-10-04 17:04:38 INFO::focal id: ENSG00000127472.10|artery_expression
+2024-10-04 17:04:38 INFO::focal molecular trait: PLA2G5 artery expression
+2024-10-04 17:04:38 INFO::Range of locus: chr1:18664016-20469198</code></pre>
+<pre><code>chromosome 1, position 18664016 to 20469198</code></pre>
+<pre><code>6204 SNPs/datapoints</code></pre>
+<pre><code>2024-10-04 17:04:38 INFO::Limit PIPs to credible sets</code></pre>
+<p><img src="figure/CAD_cTWAS_noLD.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Red Hat Enterprise Linux 8.4 (Ootpa)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.3.13-el8-x86_64/lib/libopenblas_skylakexp-r0.3.13.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] EnsDb.Hsapiens.v75_2.99.0 ensembldb_2.22.0         
+ [3] AnnotationFilter_1.22.0   GenomicFeatures_1.50.4   
+ [5] AnnotationDbi_1.60.2      Biobase_2.58.0           
+ [7] GenomicRanges_1.50.2      GenomeInfoDb_1.34.9      
+ [9] IRanges_2.32.0            S4Vectors_0.36.2         
+[11] BiocGenerics_0.44.0       RSQLite_2.3.1            
+[13] ctwas_0.4.13              data.table_1.14.8        
+[15] workflowr_1.7.1          
+
+loaded via a namespace (and not attached):
+  [1] colorspace_2.1-0            rjson_0.2.21               
+  [3] ellipsis_0.3.2              rprojroot_2.0.3            
+  [5] XVector_0.38.0              locuszoomr_0.3.5           
+  [7] fs_1.5.2                    rstudioapi_0.14            
+  [9] farver_2.1.1                DT_0.22                    
+ [11] ggrepel_0.9.3               bit64_4.0.5                
+ [13] fansi_1.0.4                 xml2_1.3.3                 
+ [15] codetools_0.2-18            logging_0.10-108           
+ [17] cachem_1.0.8                knitr_1.42                 
+ [19] jsonlite_1.8.7              Rsamtools_2.14.0           
+ [21] dbplyr_2.3.2                png_0.1-7                  
+ [23] readr_2.1.4                 compiler_4.2.0             
+ [25] httr_1.4.7                  Matrix_1.6-4               
+ [27] fastmap_1.1.1               lazyeval_0.2.2             
+ [29] cli_3.6.2                   later_1.3.0                
+ [31] htmltools_0.5.7             prettyunits_1.1.1          
+ [33] tools_4.2.0                 gtable_0.3.4               
+ [35] glue_1.6.2                  GenomeInfoDbData_1.2.9     
+ [37] dplyr_1.1.3                 rappdirs_0.3.3             
+ [39] Rcpp_1.0.11                 jquerylib_0.1.4            
+ [41] vctrs_0.6.3                 Biostrings_2.66.0          
+ [43] rtracklayer_1.58.0          crosstalk_1.2.0            
+ [45] xfun_0.40                   stringr_1.5.0              
+ [47] ps_1.7.0                    lifecycle_1.0.4            
+ [49] irlba_2.3.5                 restfulr_0.0.15            
+ [51] XML_3.99-0.9                getPass_0.2-2              
+ [53] zlibbioc_1.44.0             zoo_1.8-11                 
+ [55] scales_1.2.1                gggrid_0.2-0               
+ [57] hms_1.1.3                   promises_1.2.0.1           
+ [59] MatrixGenerics_1.10.0       ProtGenerics_1.30.0        
+ [61] parallel_4.2.0              SummarizedExperiment_1.28.0
+ [63] LDlinkR_1.3.0               yaml_2.3.7                 
+ [65] curl_4.3.2                  memoise_2.0.1              
+ [67] ggplot2_3.4.3               sass_0.4.1                 
+ [69] biomaRt_2.54.1              stringi_1.7.12             
+ [71] highr_0.9                   BiocIO_1.8.0               
+ [73] filelock_1.0.2              BiocParallel_1.32.6        
+ [75] rlang_1.1.1                 pkgconfig_2.0.3            
+ [77] matrixStats_1.2.0           bitops_1.0-7               
+ [79] evaluate_0.15               lattice_0.20-45            
+ [81] purrr_1.0.2                 labeling_0.4.3             
+ [83] GenomicAlignments_1.34.1    htmlwidgets_1.6.2          
+ [85] cowplot_1.1.1               bit_4.0.5                  
+ [87] processx_3.5.3              tidyselect_1.2.0           
+ [89] magrittr_2.0.3              R6_2.5.1                   
+ [91] generics_0.1.3              DelayedArray_0.24.0        
+ [93] DBI_1.1.3                   withr_2.5.0                
+ [95] pgenlibr_0.3.6              pillar_1.9.0               
+ [97] whisker_0.4                 KEGGREST_1.38.0            
+ [99] RCurl_1.98-1.12             mixsqp_0.3-54              
+[101] tibble_3.2.1                crayon_1.5.2               
+[103] utf8_1.2.3                  BiocFileCache_2.6.1        
+[105] plotly_4.10.0               tzdb_0.4.0                 
+[107] rmarkdown_2.21              progress_1.2.2             
+[109] grid_4.2.0                  blob_1.2.4                 
+[111] callr_3.7.0                 git2r_0.30.1               
+[113] digest_0.6.33               tidyr_1.3.0                
+[115] httpuv_1.6.5                munsell_0.5.0              
+[117] viridisLite_0.4.2           bslib_0.3.1                </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
