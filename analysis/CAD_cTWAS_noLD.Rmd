@@ -1,0 +1,217 @@
+---
+title: "CAD cTWAS (no LD)"
+author: "Xizhi Xu"
+date: "9/26/2024"
+output:
+  workflowr::wflow_html:
+    code_folding: hide
+    toc: true
+---
+
+## Set up
+
+Load the required packages. 
+
+```{r setup, message=FALSE, warning=FALSE}
+### Set up
+# setwd("xizhi_xin_midway3/cTWAS_2024")
+library(data.table)
+library(ctwas)
+library(RSQLite)
+library(EnsDb.Hsapiens.v75)
+library(workflowr)
+```
+
+
+## Prepare the input: GWAS summary statistics, Reference (region info, SNP info), Prediction model (weights)
+
+### GWAS Sum Stats 
+
+The CAD summary statistics data I used was accessed from website: https://www.nature.com/articles/s41588-022-01233-6 . I filtered the original data to maintain the MAF between (0.01, 0.99).
+
+```{r, eval=FALSE}
+gwas_data <- fread("GCST90132314_buildGRCh37.tsv", sep = "\t")
+
+# Filter to remain the variants with MAF (0.01, 0.99) 
+gwas_filter <- gwas_data[gwas_data$effect_allele_frequency > 0.01, ]
+gwas_filter <- gwas_filter[gwas_filter$effect_allele_frequency < 0.99, ]
+gwas_filter$z <- gwas_filter$beta / gwas_filter$standard_error
+
+gwas_map <- gwas_filter[, c("chromosome", "base_pair_location", "z")]
+
+```
+
+
+### Reference
+
+Here I got the region info from the package cTWAS. SNP info was also accessed from reference panel of cTWAS website.
+Another thing to notice: genome build needs to be matched. 
+
+```{r, eval=FALSE}
+# Region info
+region_file <- system.file("extdata/ldetect", "EUR.b37.ldetect.regions.RDS", package = "ctwas")
+region_info <- readRDS(region_file)
+
+# SNP info
+ref_snp_info <- fread("ukb_b37_0.1_var_info.Rvar", sep = "\t") # 9324048
+class(ref_snp_info) <- "data.frame"
+
+res <- create_snp_map(region_info, ref_snp_info, ncore = 6)
+region_info <- res$region_info
+snp_map <- res$snp_map
+
+head(region_info)
+
+ref_data <- read.table("ukb_b37_0.1_var_info.Rvar", header = TRUE, sep = "\t")
+
+colnames(gwas_map)[colnames(gwas_map) == "base_pair_location"] <- "pos"
+colnames(gwas_map)[colnames(gwas_map) == "chromosome"] <- "chrom"
+head(gwas_map)
+
+# Harmonize GWAS summary statistics.
+z_snp <- merge(gwas_map, ref_data, by = c("pos", "chrom")) # 9155485
+z_snp <- z_snp[, c("id", "alt", "ref", "z")]
+colnames(z_snp)[colnames(z_snp) == "alt"] <- "A1"
+colnames(z_snp)[colnames(z_snp) == "ref"] <- "A2"
+head(z_snp)
+
+z_snp <- preprocess_z_snp(z_snp, snp_map)
+
+```
+
+### Prediction model
+
+The prediction model was accessed from GTEx: mashr_eqtl. Here, I used artery aorta as example. 
+
+```{r,eval=FALSE}
+artery_file <- "mashr_eqtl/eqtl/mashr/mashr_Artery_Aorta.db"
+artery <- preprocess_weights(artery_file,
+                                    region_info,
+                                    z_snp$id,
+                                    snp_map,
+                                    type = "expression",
+                                    context = "artery",
+                                    ncore = 6)
+```
+
+
+## Run cTWAS
+
+After all the input files ready, run the cTWAS.
+
+```{r}
+# # ctwas_res <- ctwas_sumstats_noLD(z_snp,
+#                                  artery,
+#                                  region_info,
+#                                  snp_map,
+#                                  thin = 0.1, 
+#                                  ncore = 6)
+
+load("ctwas_res_noLD.RData")
+
+z_gene <- ctwas_res$z_gene
+param <- ctwas_res$param
+finemap_res <- ctwas_res$finemap_res
+boundary_genes <- ctwas_res$boundary_genes
+region_data <- ctwas_res$region_data
+screen_res <- ctwas_res$screen_res
+```
+
+### Explore and interpret the results
+
+Create the convergence plots:
+
+```{r}
+gwas_n <- 1165690
+make_convergence_plots(param, gwas_n)
+
+```
+
+Estimate the parameters:
+
+```{r}
+ctwas_parameters <- summarize_param(param, gwas_n)
+ctwas_parameters
+
+finemap_res$molecular_id <- get_molecular_ids(finemap_res)
+```
+
+Add p-values to finemapping results:
+
+```{r}
+finemap_res$pval <- z2p(finemap_res$z)
+head(finemap_res)
+```
+
+View the results: mol traits, PIP > 0.8
+
+```{r}
+finemap_sig <- subset(finemap_res, group != "SNP" & susie_pip > 0.8 & cs_index != 0) # 20 sig genes, 4 sig SNPs
+```
+
+Compute gene PIPs:
+
+```{r}
+combined_pip_by_context <- combine_gene_pips(finemap_res, 
+                                             group_by = "molecular_id",
+                                             by = "context",
+                                             method = "sum",
+                                             filter_cs = TRUE)
+
+combined_pip_by_context_sig <- subset(combined_pip_by_context, combined_pip > 0.8)
+
+DT::datatable(combined_pip_by_context_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant genes'),options = list(pageLength = 10) )
+
+```
+
+Add gene annotations:(make sure the genome build match)
+
+```{r}
+ens_db <- EnsDb.Hsapiens.v75
+finemap_gene_res <- subset(finemap_res, group != "SNP")
+gene_ids <- unique(finemap_gene_res$molecular_id)
+gene_annot <- get_gene_annot_from_ens_db(ens_db, gene_ids)
+colnames(gene_annot)[colnames(gene_annot) == "gene_id"] <- "molecular_id"
+head(gene_annot)
+
+load("res.RData")
+snp_map <- res$snp_map
+# Update finemap results with gene annot
+finemap_res <- anno_finemap_res(finemap_res,
+                                snp_map = snp_map,
+                                mapping_table = gene_annot,
+                                add_gene_annot = TRUE,
+                                map_by = "molecular_id",
+                                drop_unmapped = TRUE,
+                                add_position = TRUE,
+                                use_gene_pos = "mid")
+
+finemap_res_sig <- subset(finemap_res, group != "SNP" & gene_type == "protein_coding" & susie_pip > 0.8 & cs_index != 0)
+
+DT::datatable(finemap_res_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant protein-coding genes'),options = list(pageLength = 10) )
+
+combined_pip_by_type <- combine_gene_pips(finemap_res,
+                                          group_by = "gene_name",
+                                          by = "type",
+                                          method = "combine_cs",
+                                          filter_cs = TRUE)
+
+subset(combined_pip_by_type, combined_pip > 0.8)
+
+```
+
+### Visualize by the gene plots
+
+```{r}
+make_locusplot(finemap_res,
+               region_id = "1_18662899_20469149",
+               ens_db = ens_db,
+               highlight_pip = 0.8,
+               filter_protein_coding_genes = TRUE,
+               filter_cs = TRUE,
+               color_pval_by = "cs",
+               color_pip_by = "cs")
+```
+
+
+
