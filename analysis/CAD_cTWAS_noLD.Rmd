@@ -1,7 +1,7 @@
 ---
 title: "CAD cTWAS (no LD)"
 author: "Xizhi Xu"
-date: "9/26/2024"
+date: "10/09/2024"
 output:
   workflowr::wflow_html:
     code_folding: hide
@@ -14,11 +14,14 @@ Load the required packages.
 
 ```{r setup, message=FALSE, warning=FALSE}
 ### Set up
+setwd("/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS")
+# setwd("xizhi_xin_midway3/cTWAS_2024/CAD_cTWAS")
 # setwd("xizhi_xin_midway3/cTWAS_2024")
 library(data.table)
 library(ctwas)
 library(RSQLite)
 library(EnsDb.Hsapiens.v75)
+library(ggplot2)
 library(workflowr)
 ```
 
@@ -45,7 +48,7 @@ gwas_map <- gwas_filter[, c("chromosome", "base_pair_location", "z")]
 ### Reference
 
 Here I got the region info from the package cTWAS. SNP info was also accessed from reference panel of cTWAS website.
-Another thing to notice: genome build needs to be matched. 
+Another thing to notice: genome build needs to be matched. (Here: GRCh37 / hg19)
 
 ```{r, eval=FALSE}
 # Region info
@@ -81,17 +84,26 @@ z_snp <- preprocess_z_snp(z_snp, snp_map)
 
 ### Prediction model
 
-The prediction model was accessed from GTEx: mashr_eqtl. Here, I used artery aorta as example. 
+The prediction model was accessed from GTEx. The molecular traits were expression and splicing. Here, I used artery aorta as example. 
 
 ```{r,eval=FALSE}
-artery_file <- "mashr_eqtl/eqtl/mashr/mashr_Artery_Aorta.db"
-artery <- preprocess_weights(artery_file,
+artery_eqtl <- "mashr_eqtl/eqtl/mashr/mashr_Artery_Aorta.db"
+artery_eqtl_weights <- preprocess_weights(artery_eqtl,
                                     region_info,
                                     z_snp$id,
                                     snp_map,
                                     type = "expression",
-                                    context = "artery",
-                                    ncore = 6)
+                                    context = "artery")
+
+artery_sqtl <- "mashr_sqtl/sqtl/mashr/mashr_Artery_Aorta.db"
+artery_sqtl_weights <- preprocess_weights(artery_sqtl,
+                                          region_info,
+                                          z_snp$id,
+                                          snp_map,
+                                          type = "splicing",
+                                          context = "artery")
+
+weights <- c(artery_eqtl_weights, artery_sqtl_weights)
 ```
 
 
@@ -109,9 +121,12 @@ After all the input files ready, run the cTWAS.
 
 load("ctwas_res_noLD.RData")
 
+ctwas_res <- ctwas_res2
+
 z_gene <- ctwas_res$z_gene
 param <- ctwas_res$param
 finemap_res <- ctwas_res$finemap_res
+susie_alpha_res <- ctwas_res$susie_alpha_res
 boundary_genes <- ctwas_res$boundary_genes
 region_data <- ctwas_res$region_data
 screen_res <- ctwas_res$screen_res
@@ -119,7 +134,7 @@ screen_res <- ctwas_res$screen_res
 
 ### Explore and interpret the results
 
-Create the convergence plots:
+**Create the convergence plots:**
 
 ```{r}
 gwas_n <- 1165690
@@ -127,36 +142,78 @@ make_convergence_plots(param, gwas_n)
 
 ```
 
-Estimate the parameters:
+These plots show the estimated prior inclusion probability, prior effect size variance, enrichment and proportion of variance explained (PVE) over the iterations of parameter estimation. 
+
+
+**Estimate the parameters:**
 
 ```{r}
 ctwas_parameters <- summarize_param(param, gwas_n)
 ctwas_parameters
-
-finemap_res$molecular_id <- get_molecular_ids(finemap_res)
 ```
 
-Add p-values to finemapping results:
+
+**Create the pie chart to see the heritability:**
 
 ```{r}
+data <- data.frame(
+  category = names(ctwas_parameters$prop_heritability),
+  percentage = ctwas_parameters$prop_heritability
+)
+
+data$percentage_label <- paste0(round(data$percentage * 100, 1), "%")
+
+ggplot(data, aes(x = "", y = percentage, fill = category)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  theme_void() +  # Remove background and axes
+  geom_text(aes(label = percentage_label), 
+            position = position_stack(vjust = 0.5), size = 5) +
+  scale_fill_manual(values = c("#FF9999", "#66B2FF", "#99FF99")) +  # Custom colors
+  labs(fill = "Category") +
+  ggtitle("Percent of heritability")
+
+```
+
+
+**Create a diagnostic plot:**
+
+```{r}
+ggplot(data = finemap_res[finemap_res$type!="SNP",], aes(x = abs(z), y = susie_pip)) +
+  geom_point() +
+  labs(x = "abs(z-scores)", y = "PIPs") +
+  theme_minimal()
+```
+
+### Inspecting and summarizing results
+
+**Add p-values to finemapping results:**
+
+```{r}
+finemap_res$molecular_id <- get_molecular_ids(finemap_res)
 finemap_res$pval <- z2p(finemap_res$z)
 head(finemap_res)
 ```
 
-View the results: mol traits, PIP > 0.8
+**View the results: mol traits, PIP > 0.8**
 
 ```{r}
-finemap_sig <- subset(finemap_res, group != "SNP" & susie_pip > 0.8 & cs_index != 0) # 20 sig genes, 4 sig SNPs
+finemap_sig <- subset(finemap_res, group != "SNP" & susie_pip > 0.8 & !is.na(cs))
+
 ```
 
-Compute gene PIPs:
+There were 19 significant molecular traits: 12 expression, 7 splicing.
+
+
+**Compute gene PIPs:**
 
 ```{r}
-combined_pip_by_context <- combine_gene_pips(finemap_res, 
+combined_pip_by_context <- combine_gene_pips(susie_alpha_res, 
                                              group_by = "molecular_id",
                                              by = "context",
-                                             method = "sum",
-                                             filter_cs = TRUE)
+                                             method = "combine_cs",
+                                             filter_cs = TRUE,
+                                             include_cs_id = TRUE)
 
 combined_pip_by_context_sig <- subset(combined_pip_by_context, combined_pip > 0.8)
 
@@ -164,7 +221,7 @@ DT::datatable(combined_pip_by_context_sig,caption = htmltools::tags$caption( sty
 
 ```
 
-Add gene annotations:(make sure the genome build match)
+**Add gene annotations:(make sure the genome build match)** 
 
 ```{r}
 ens_db <- EnsDb.Hsapiens.v75
@@ -176,6 +233,11 @@ head(gene_annot)
 
 load("res.RData")
 snp_map <- res$snp_map
+```
+
+**Update finemapping results with gene annotation:** 
+
+```{r}
 # Update finemap results with gene annot
 finemap_res <- anno_finemap_res(finemap_res,
                                 snp_map = snp_map,
@@ -186,26 +248,41 @@ finemap_res <- anno_finemap_res(finemap_res,
                                 add_position = TRUE,
                                 use_gene_pos = "mid")
 
-finemap_res_sig <- subset(finemap_res, group != "SNP" & gene_type == "protein_coding" & susie_pip > 0.8 & cs_index != 0)
+finemap_res_sig <- subset(finemap_res, group != "SNP" & gene_type == "protein_coding" & susie_pip > 0.8 & !is.na(cs))
 
 DT::datatable(finemap_res_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant protein-coding genes'),options = list(pageLength = 10) )
 
-combined_pip_by_type <- combine_gene_pips(finemap_res,
+```
+
+
+Compute gene PIPs across different types of molecular traits. Here, "group_by = gene_name", because molecular traits are mapped to their corresponding genes by the “gene_name” column.
+
+```{r}
+susie_alpha_res <- anno_susie_alpha_res(susie_alpha_res,
+                                        mapping_table = gene_annot,
+                                        map_by = "molecular_id",
+                                        drop_unmapped = TRUE)
+
+combined_pip_by_type <- combine_gene_pips(susie_alpha_res,
                                           group_by = "gene_name",
                                           by = "type",
                                           method = "combine_cs",
-                                          filter_cs = TRUE)
+                                          filter_cs = TRUE,
+                                          include_cs_id = TRUE)
 
-subset(combined_pip_by_type, combined_pip > 0.8)
+combined_pip_by_type_sig <- subset(combined_pip_by_type, combined_pip > 0.8)
 
+DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant genes'),options = list(pageLength = 10) )
 ```
 
 ### Visualize by the gene plots
 
 ```{r}
+load("weights.RData")
 make_locusplot(finemap_res,
-               region_id = "1_18662899_20469149",
+               region_id = "6_11790816_13209388",
                ens_db = ens_db,
+               weights = weights,
                highlight_pip = 0.8,
                filter_protein_coding_genes = TRUE,
                filter_cs = TRUE,
@@ -214,4 +291,14 @@ make_locusplot(finemap_res,
 ```
 
 
+The top track showed -log10(p-value) of the association of variants (from CAD GWAS) and molecular traits (from the package computed z-scores) with the phenotype.
+
+The mid track showed PIPs of variants and molecular traits. We limited PIP results to credible sets in the PIP track (filter_cs = TRUE). 
+
+The next track showed the QTLs of the focal gene. We chose the molecular trait with the highest PIP (“PHACTR1” in this case). 
+
+The bottom is the gene track. We limited results to protein coding genes by default. We could draw a red dotted line to show the PIP cutoff of 0.8 by setting highlight_pip = 0.8.
+
+
+As conclusion, we found PHACTR1 as the likely causal gene of CAD. The protein encoded by this gene is a member of the phosphatase and actin regulator family of proteins. Polymorphisms in this gene are associated with susceptibility to myocardial infarction, coronary artery disease and cervical artery dissection. Alternative splicing of this gene results in multiple transcript variants. The detailed gene function and summary of this gene can be found at [genecard](https://www.genecards.org/cgi-bin/carddisp.pl?gene=PHACTR1) 
 
