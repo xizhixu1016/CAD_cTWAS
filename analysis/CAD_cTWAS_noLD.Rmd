@@ -1,7 +1,7 @@
 ---
 title: "CAD cTWAS (no LD)"
 author: "Xizhi Xu"
-date: "10/09/2024"
+date: "10/14/2024"
 output:
   workflowr::wflow_html:
     code_folding: hide
@@ -14,13 +14,11 @@ Load the required packages.
 
 ```{r setup, message=FALSE, warning=FALSE}
 ### Set up
-setwd("/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS")
-# setwd("xizhi_xin_midway3/cTWAS_2024/CAD_cTWAS")
 # setwd("xizhi_xin_midway3/cTWAS_2024")
 library(data.table)
 library(ctwas)
 library(RSQLite)
-library(EnsDb.Hsapiens.v75)
+library(EnsDb.Hsapiens.v86)
 library(ggplot2)
 library(workflowr)
 ```
@@ -48,15 +46,15 @@ gwas_map <- gwas_filter[, c("chromosome", "base_pair_location", "z")]
 ### Reference
 
 Here I got the region info from the package cTWAS. SNP info was also accessed from reference panel of cTWAS website.
-Another thing to notice: genome build needs to be matched. (Here: GRCh37 / hg19)
+Another thing to notice: genome build needs to be matched. (Here: GRCh38 / hg38)
 
 ```{r, eval=FALSE}
 # Region info
-region_file <- system.file("extdata/ldetect", "EUR.b37.ldetect.regions.RDS", package = "ctwas")
+region_file <- system.file("extdata/ldetect", "EUR.b38.ldetect.regions.RDS", package = "ctwas")
 region_info <- readRDS(region_file)
 
 # SNP info
-ref_snp_info <- fread("ukb_b37_0.1_var_info.Rvar", sep = "\t") # 9324048
+ref_snp_info <- fread("ukb_b38_0.1_var_info.Rvar", sep = "\t") # 9309375
 class(ref_snp_info) <- "data.frame"
 
 res <- create_snp_map(region_info, ref_snp_info, ncore = 6)
@@ -71,14 +69,25 @@ colnames(gwas_map)[colnames(gwas_map) == "base_pair_location"] <- "pos"
 colnames(gwas_map)[colnames(gwas_map) == "chromosome"] <- "chrom"
 head(gwas_map)
 
-# Harmonize GWAS summary statistics.
+# Merge to find rsID based on positions
 z_snp <- merge(gwas_map, ref_data, by = c("pos", "chrom")) # 9155485
 z_snp <- z_snp[, c("id", "alt", "ref", "z")]
 colnames(z_snp)[colnames(z_snp) == "alt"] <- "A1"
 colnames(z_snp)[colnames(z_snp) == "ref"] <- "A2"
 head(z_snp)
+```
 
+
+Harmonize GWAS summary statistics:
+
+```{r}
+# Harmonize GWAS summary statistics
+load("z_snp.RData")
+load("res.RData")
+region_info <- res$region_info
+snp_map <- res$snp_map
 z_snp <- preprocess_z_snp(z_snp, snp_map)
+dim(z_snp)
 
 ```
 
@@ -120,8 +129,6 @@ After all the input files ready, run the cTWAS.
 #                                  ncore = 6)
 
 load("ctwas_res_noLD.RData")
-
-ctwas_res <- ctwas_res2
 
 z_gene <- ctwas_res$z_gene
 param <- ctwas_res$param
@@ -202,7 +209,7 @@ finemap_sig <- subset(finemap_res, group != "SNP" & susie_pip > 0.8 & !is.na(cs)
 
 ```
 
-There were 19 significant molecular traits: 12 expression, 7 splicing.
+There were 18 significant molecular traits: 12 expression, 6 splicing.
 
 
 **Compute gene PIPs:**
@@ -224,15 +231,8 @@ DT::datatable(combined_pip_by_context_sig,caption = htmltools::tags$caption( sty
 **Add gene annotations:(make sure the genome build match)** 
 
 ```{r}
-ens_db <- EnsDb.Hsapiens.v75
-finemap_gene_res <- subset(finemap_res, group != "SNP")
-gene_ids <- unique(finemap_gene_res$molecular_id)
-gene_annot <- get_gene_annot_from_ens_db(ens_db, gene_ids)
-colnames(gene_annot)[colnames(gene_annot) == "gene_id"] <- "molecular_id"
-head(gene_annot)
-
-load("res.RData")
-snp_map <- res$snp_map
+ens_db <- EnsDb.Hsapiens.v86
+mapping_table <- readRDS("/project2/xinhe/shared_data/multigroup_ctwas/weights/mapping_files/PredictDB_mapping.RDS")
 ```
 
 **Update finemapping results with gene annotation:** 
@@ -241,7 +241,7 @@ snp_map <- res$snp_map
 # Update finemap results with gene annot
 finemap_res <- anno_finemap_res(finemap_res,
                                 snp_map = snp_map,
-                                mapping_table = gene_annot,
+                                mapping_table = mapping_table,
                                 add_gene_annot = TRUE,
                                 map_by = "molecular_id",
                                 drop_unmapped = TRUE,
@@ -257,9 +257,12 @@ DT::datatable(finemap_res_sig,caption = htmltools::tags$caption( style = 'captio
 
 Compute gene PIPs across different types of molecular traits. Here, "group_by = gene_name", because molecular traits are mapped to their corresponding genes by the “gene_name” column.
 
+
+
+
 ```{r}
 susie_alpha_res <- anno_susie_alpha_res(susie_alpha_res,
-                                        mapping_table = gene_annot,
+                                        mapping_table = mapping_table,
                                         map_by = "molecular_id",
                                         drop_unmapped = TRUE)
 
@@ -275,12 +278,12 @@ combined_pip_by_type_sig <- subset(combined_pip_by_type, combined_pip > 0.8)
 DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant genes'),options = list(pageLength = 10) )
 ```
 
-### Visualize by the gene plots
+### Visualize by the gene locus plots
 
 ```{r}
 load("weights.RData")
 make_locusplot(finemap_res,
-               region_id = "6_11790816_13209388",
+               region_id = "17_36141651_38653091",
                ens_db = ens_db,
                weights = weights,
                highlight_pip = 0.8,
