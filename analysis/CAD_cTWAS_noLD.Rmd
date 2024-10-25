@@ -19,7 +19,7 @@ Load the required packages.
 
 ```{r setup, message=FALSE, warning=FALSE}
 ### Set up
-# setwd("xizhi_xin_midway3/cTWAS_2024/CAD_cTWAS")
+# setwd("xizhi_xin_midway3/cTWAS_2024")
 library(data.table)
 library(ctwas)
 library(RSQLite)
@@ -263,34 +263,10 @@ finemap_res$pval <- z2p(finemap_res$z)
 head(finemap_res)
 ```
 
-**View the results: mol traits, PIP > 0.8**
-
-```{r}
-finemap_sig <- subset(finemap_res, group != "SNP" & susie_pip > 0.8 & !is.na(cs))
-table(finemap_sig$type)
-
-```
-
-There were 15 significant molecular traits: 12 expression, 3 splicing.
-
-
-**Compute gene PIPs:**
-
-```{r}
-combined_pip_by_context <- combine_gene_pips(susie_alpha_res, 
-                                             group_by = "molecular_id",
-                                             by = "context",
-                                             method = "combine_cs",
-                                             filter_cs = TRUE,
-                                             include_cs_id = TRUE)
-
-combined_pip_by_context_sig <- subset(combined_pip_by_context, combined_pip > 0.8)
-
-DT::datatable(combined_pip_by_context_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant genes'),options = list(pageLength = 10) )
-
-```
 
 **Add gene annotations:(make sure the genome build match)** 
+
+Then we mapped the molecular traits to their corresponding genes to compute gene PIPs. 
 
 ```{r}
 ens_db <- EnsDb.Hsapiens.v86
@@ -311,8 +287,6 @@ finemap_res <- anno_finemap_res(finemap_res,
                                 use_gene_pos = "mid")
 
 finemap_res_sig <- subset(finemap_res, group != "SNP" & gene_type == "protein_coding" & susie_pip > 0.8 & !is.na(cs))
-
-DT::datatable(finemap_res_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant protein-coding genes'),options = list(pageLength = 10) )
 
 ```
 
@@ -335,7 +309,7 @@ combined_pip_by_type <- combine_gene_pips(susie_alpha_res,
 
 combined_pip_by_type_sig <- subset(combined_pip_by_type, combined_pip > 0.8)
 
-DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Significant genes'),options = list(pageLength = 10) )
+DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Gene PIPs, only genes with credible sets are shown'),options = list(pageLength = 10) )
 ```
 
 ### Visualize by the gene locus plots
