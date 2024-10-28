@@ -1,0 +1,281 @@
+---
+title: "Check the novel discoveries"
+author: "Xizhi Xu"
+date: "10/25/2024"
+output: html_document
+---
+
+First, load the required packages and previous results. 
+
+```{r setup}
+library(ctwas)
+library(data.table)
+
+load("combined_pip_by_type_sig.RData")
+
+DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption( style = 'caption-side: topleft; text-align = left; color:black;','Gene PIPs, only genes with credible sets are shown'),options = list(pageLength = 10) )
+```
+
+Now, let's find if any of found genes are novel discoveries.
+
+### TRMT61B
+
+**Novel:** Yes
+
+**Context:** TRMT61B encodes an enzyme involved in mitochondrial RNA modification, specifically in the methylation of mitochondrial tRNAs. The connection between mitochondrial health and cardiovascular conditions, however, suggests that TRMT61B could be of indirect interest, particularly if mitochondrial dysfunction emerges as a significant contributing factor to CAD in specific contexts.
+
+
+### TBC1D7
+
+**Novel:** No
+
+**Context:** The gene TBC1D7 has been implicated in coronary artery disease. Some studies have identified variants in TBC1D7 associated with cardiovascular traits.
+
+
+### ZNHIT3
+
+**Novel:** No
+
+**Context:** Some genetic association studies have identified ZNHIT3 as a candidate gene linked to CAD and other cardiovascular traits, particularly due to its potential roles in various biological processes relevant to cardiovascular health.
+
+
+### PHACTR1
+
+**Novel:** No
+
+**Context:** Numerous genome-wide association studies (GWAS) have identified PHACTR1 as a significant locus associated with CAD and related cardiovascular traits. Variants near or within the PHACTR1 gene have been consistently linked to increased risk of CAD and other cardiovascular conditions. PHACTR1 is involved in regulating the actin cytoskeleton and cellular signaling pathways, influencing cell migration, adhesion, and proliferation. These processes are essential for vascular remodeling and the development of atherosclerosis. 
+
+
+### BOP1
+
+**Novel:** Yes
+
+**Context:** GOP1 is a protein involved in cellular processes linked to the Golgi apparatus, which is a critical organelle in the modification, sorting, and transport of proteins and lipids. Proper Golgi function is crucial for endothelial cells, which line the blood vessels. Dysfunction in proteins involved in the Golgi apparatus could affect endothelial integrity, permeability, and the ability to regulate blood pressure and inflammation, all of which are relevant to CAD.
+
+
+### NBEAL1
+
+**Novel:** No
+
+**Context:** NBEAL1 belongs to the BEACH (Beige and Chediak-Higashi) domain-containing protein family, which is involved in intracellular membrane trafficking, vesicle formation, and secretion. Several genome-wide association studies (GWAS) have identified NBEAL1 as a genetic locus associated with CAD risk. Variants in the NBEAL1 gene region have been linked to increased susceptibility to atherosclerosis and cardiovascular disease in diverse populations.
+
+
+### TCF21
+
+**Novel:** No
+
+**Context:** TCF21 (Transcription Factor 21) is a well-established gene involved in coronary artery disease (CAD). Research has identified TCF21 as a key player in cardiovascular development, and its role in CAD is linked to vascular biology and the formation of atherosclerotic plaques.
+
+
+### IP6K2
+
+**Novel:** Yes
+
+**Context:** IP6K2 is an enzyme that converts inositol hexakisphosphate (IP6) to inositol pyrophosphates, specifically IP7 (5-diphosphoinositol pentakisphosphate). These molecules act as important second messengers in a variety of cellular processes. IP6K2’s role in apoptosis suggests it could influence plaque stability indirectly, impacting the risk of acute coronary events like heart attacks.
+
+
+### ITIH4
+
+**Novel:** No 
+
+**Context:** ITIH4 (Inter-Alpha-Trypsin Inhibitor Heavy Chain 4) has been studied in relation to various health conditions, including cardiovascular diseases like coronary artery disease (CAD). It is a protein primarily involved in inflammation, extracellular matrix stability, and the acute phase response, making it a potentially relevant player in the development of CAD.
+
+
+### PTK7
+
+**Novel:** Yes
+
+**Context:** PTK7 is involved in the Wnt signaling pathway, which is crucial for cell development, differentiation, and migration. Inflammation plays a significant role in CAD, contributing to the initiation and progression of atherosclerosis. PTK7’s regulation of cell signaling pathways, such as the Wnt pathway, can affect inflammatory responses in the cardiovascular system.
+
+
+### ITGA1
+
+**Novel:** Yes
+
+**Context:** ITGA1 (Integrin Subunit Alpha 1) is a gene that encodes a protein that is part of the integrin family. ITGA1, through its role in ECM interactions, can influence how cells respond to the ECM during plaque development. Dysregulation of integrin signaling could affect plaque stability, leading to an increased risk of rupture and acute coronary events.
+
+
+### TBXAS1
+
+**Novel:** No 
+
+**Context:** Genetic variants in the TBXAS1 gene have been investigated in relation to cardiovascular risk. Some studies have found associations between certain variants and increased susceptibility to thrombotic events, which are relevant to CAD.
+
+
+### SAP130
+
+**Novel:** Yes
+
+**Context:** SAP130 (Sin3A-Associated Protein, 130 kDa) is a gene that encodes a component of the Sin3A transcriptional corepressor complex. This complex is involved in chromatin remodeling and gene expression regulation, affecting various biological processes, including cell cycle control, apoptosis, and immune responses. SAP130, through its influence on immune activation and inflammation, may indirectly contribute to the endothelial dysfunction seen in early stages of CAD.
+
+
+### CCM2
+
+**Novel:** Yes
+
+**Context:** CCM2 (Cerebral Cavernous Malformation 2) is a gene that encodes a protein involved in the maintenance of vascular integrity and regulation of endothelial cell function. CCM2's role in vascular integrity and endothelial function suggests it potentially relevant in CAD.
+
+
+### MRAS
+
+**Novel:** Yes
+
+**Context:** MRAS (M Ras) is a gene that encodes a member of the Ras family of GTPases, which are involved in various cellular signaling pathways. MRAS’s role in regulating endothelial cell adhesion and migration may be crucial in maintaining endothelial integrity, and disruptions in its function could contribute to endothelial dysfunction associated with CAD.
+
+
+### LIPA
+
+**Novel:** No
+
+**Context:** LIPA (Lysosomal Acid Lipase) is a gene that encodes an enzyme responsible for the breakdown of lipids. Genetic variants in the LIPA gene have been associated with altered lipid profiles and increased risk for CAD. Studies have shown that certain polymorphisms can impact LIPA enzyme activity and lipid metabolism.
+
+
+### TGFB1
+
+**Novel:** No
+
+**Context:** TGFB1 (Transforming Growth Factor Beta 1) is a cytokine that plays a crucial role in various biological processes. TGFB1 is implicated in the pathogenesis of atherosclerosis, a major contributor to CAD. Chronic exposure to high levels of TGFB1 can lead to endothelial dysfunction, characterized by impaired nitric oxide production and increased expression of adhesion molecules. 
+
+
+### PDLIM5
+
+**Novel:** Yes
+
+**Context:** PDLIM5 (PDZ and LIM Domain Containing 5) is a gene that encodes a protein belonging to the PDZ-LIM family. Given PDLIM5's involvement in endothelial cell adhesion and signaling, alterations in its function could potentially contribute to endothelial dysfunction, an early event in CAD development. PDLIM5's role in regulating cell adhesion and migration suggests it could influence the development of atherosclerosis.
+
+
+### FES
+
+**Novel:** Yes
+
+**Context:** FES (Feline Sarcoma Oncogene) encodes a non-receptor tyrosine kinase involved in signaling pathways that regulate cell growth, differentiation, and survival. Given FES's role in immune cell regulation, it may contribute to inflammatory responses within atherosclerotic plaques. Dysregulated FES activity might impair endothelial repair, promoting an environment conducive to CAD progression.
+
+
+### CETP
+
+**Novel:** No
+
+**Context:** CETP (Cholesteryl Ester Transfer Protein) is involved in coronary artery disease (CAD) and has been extensively studied for its role in lipid metabolism. CETP activity impacts cholesterol levels and distribution within the bloodstream, which can directly influence the development of atherosclerosis, a major contributor to CAD.
+
+
+### CDK8
+
+**Novel:** Yes
+
+**Context:** CDK8 (Cyclin-Dependent Kinase 8) is primarily known as a regulatory kinase involved in gene transcription, particularly in modifying RNA polymerase II activity and mediating transcriptional responses to various signaling pathways. CDK8’s regulation of inflammation-related genes suggests it may contribute to atherosclerosis, the buildup of plaques in arterial walls. Dysregulation of inflammation is a major factor in CAD, and genes modulating these processes can influence CAD susceptibility.
+
+
+### MAP1S
+
+**Novel:** Yes
+
+**Context:** MAP1S (Microtubule-Associated Protein 1S) is a gene encoding a protein involved in cellular processes like autophagy, mitochondrial quality control, and microtubule stability. Impaired MAP1S function could lead to accumulated mitochondrial damage, increasing oxidative stress and promoting vascular injury and inflammation, both critical in CAD.
+
+
+### BMP1
+
+**Novel:** No
+
+**Context:**  BMP1 (Bone Morphogenetic Protein 1) is involved in processes that are relevant to coronary artery disease (CAD) and has been implicated in cardiovascular health through its roles in extracellular matrix (ECM) remodeling and tissue repair.
+
+
+### CORO6
+
+**Novel:** Yes
+
+**Context:** CORO6 (Coronin 6) is a member of the coronin family of proteins, which are known to be involved in various cellular processes, including actin cytoskeleton dynamics, cell signaling, and immune responses. Since chronic inflammation is a hallmark of atherosclerosis, CORO6’s role in regulating immune cell functions could affect inflammatory responses in the vascular wall. This could lead to changes in plaque stability and the progression of CAD.
+
+
+### ARVCF
+
+**Novel:** Yes
+
+**Context:** ARVCF (Armadillo Repeat Gene Deleted in Velocardiofacial Syndrome) is a member of the armadillo repeat family of proteins, which are involved in various cellular processes, including cell adhesion, signaling, and the regulation of the cytoskeleton. Given its role in cell adhesion and junction stability, ARVCF may influence endothelial cell function. Endothelial dysfunction is a key event in the pathogenesis of CAD, and proteins that regulate adhesion and barrier function are critical in maintaining vascular health.
+
+
+### ZSCAN31
+
+**Novel:** Yes
+
+**Context:** ZSCAN31 (Zinc Finger and SCAN Domain Containing 31) is a transcription factor that has been implicated in various biological processes, including gene regulation, stem cell maintenance, and development. ZSCAN31’s role in gene regulation and inflammatory responses suggests it could be involved in atherosclerotic processes. Chronic inflammation in the vascular wall is a hallmark of atherosclerosis, and proteins that modulate inflammatory pathways could influence CAD risk.
+
+
+### GSTT2B
+
+**Novel:** Yes
+
+**Context:** GSTT2B (Glutathione S-Transferase Theta 2B) is part of the glutathione S-transferase (GST) family of enzymes, which are involved in detoxification processes by catalyzing the conjugation of glutathione to various substrates, including drugs and environmental toxins. Given GSTT2B's role in detoxifying ROS, it may have protective effects against oxidative damage to endothelial cells. Endothelial dysfunction is a critical event in the development of CAD, and any protein that helps mitigate oxidative stress could potentially influence CAD risk.
+
+
+### SERPINH1
+
+**Novel:** Yes
+
+**Context:** SERPINH1 (Serpin Family H Member 1), also known as heat shock protein 47 (HSP47), is a member of the serpin superfamily of proteins. Collagen is essential for maintaining endothelial integrity and function. Any alterations in collagen production or structure mediated by SERPINH1 could potentially impact endothelial health, which is critical in CAD development.
+
+
+### MIA3
+
+**Novel:** Yes
+
+**Context:** MIA3 (Melanoma Inhibitory Activity 3), also known as TANGO1 (Transport and Golgi Organization Protein 1), is a protein involved in the trafficking and secretion of large extracellular matrix proteins, particularly collagens. MIA3’s role in collagen secretion may influence plaque stability in atherosclerosis. Collagen is essential for stabilizing atherosclerotic plaques; inadequate collagen in plaques can lead to rupture, which is a major cause of myocardial infarction in CAD.
+
+
+### SIPA1
+
+**Novel:** Yes
+
+**Context:** SIPA1 (Signal-Induced Proliferation-Associated 1) is a gene that encodes a protein involved in cell signaling and the regulation of cellular functions, including cell adhesion, migration, and proliferation. SIPA1’s regulation of cell adhesion and migration may influence endothelial cell function, which is vital for vascular health. Endothelial dysfunction is an early event in CAD, contributing to plaque formation and progression. 
+
+
+### R3HDM2
+
+**Novel:** Yes
+
+**Context:** R3HDM2 (R3H Domain-Containing Protein 2) is a gene that encodes a protein with an R3H domain, a motif that enables RNA or single-stranded DNA binding. While R3HDM2 itself hasn’t been directly implicated in CAD, genes involved in regulating mRNA stability and cellular response to stress can influence cardiovascular health. For example, oxidative stress and inflammation are key drivers of CAD, and proteins that help cells manage these stressors may indirectly impact CAD risk.
+
+
+### EIF2B2
+
+**Novel:** Yes
+
+**Context:** EIF2B2 (Eukaryotic Translation Initiation Factor 2B Subunit Beta) is a gene that encodes a subunit of the eIF2B complex, which plays a key role in the initiation of protein translation, particularly under cellular stress. By contributing to the cellular stress response, EIF2B2 could indirectly impact vascular cell resilience in CAD. Endothelial cells and vascular smooth muscle cells benefit from efficient stress adaptation, helping maintain vascular integrity under adverse conditions.
+
+
+### RRBP1
+
+**Novel:** Yes
+
+**Context:** RRBP1 (Ribosome Binding Protein 1) encodes a protein associated with the rough endoplasmic reticulum (ER), primarily involved in the binding of ribosomes to the ER membrane and in protein translocation. In the context of CAD, vascular cells (such as endothelial cells and smooth muscle cells) require efficient ER function to cope with inflammatory and oxidative stress. By aiding in protein translocation and folding, RRBP1 might indirectly support the resilience of these cells, thereby contributing to plaque stability.
+
+
+### C6orf106
+
+**Novel:** Yes
+
+**Context:** C6orf106 is thought to regulate immune signaling pathways, particularly those involved in inflammation. This role may involve influencing the stability of specific cytokine mRNAs, which are essential in mediating inflammatory responses. 
+
+
+### PSMA3-AS1
+
+**Novel:** Yes
+
+**Context:** PSMA3-AS1 (PSMA3 Antisense RNA 1) is a long non-coding RNA (lncRNA) that is transcribed antisense to the PSMA3 gene, which encodes a subunit of the proteasome complex involved in protein degradation. Impaired proteostasis is associated with atherosclerosis, as the buildup of damaged proteins contributes to plaque formation and inflammation. If PSMA3-AS1 influences proteasome function, it could impact proteostasis in vascular cells, potentially affecting atherosclerosis progression and CAD risk.
+
+
+### CALCRL
+
+**Novel:** No
+
+**Context:** CALCRL (Calcitonin Receptor-Like Receptor) encodes a receptor that plays a key role in cardiovascular and inflammatory processes by mediating the effects of several peptides, including adrenomedullin and calcitonin gene-related peptide (CGRP). These peptides influence vascular tone, endothelial function, and inflammation, making CALCRL a gene of interest in studies on coronary artery disease (CAD).
+
+
+
+
+
+
+
+
+
+
+
