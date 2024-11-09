@@ -1,0 +1,489 @@
+---
+title: "CAD cTWAS with LD"
+author: "Xizhi Xu"
+date: "11/08/2024"
+output:
+  workflowr::wflow_html:
+    code_folding: hide
+    toc: true
+---
+
+**Version Notes**
+
+This is the LD version of cTWAS. The prediction model includes tissues "Aorta", "Coronary", "Tibial" with their expression , splicing and stability. The genome build of prediction model and reference was HG38. 
+
+
+## Set up
+
+Load the required packages. 
+
+```{r setup, message=FALSE, warning=FALSE}
+### Set up
+setwd("/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS")
+library(data.table)
+library(ctwas)
+library(ggplot2)
+library(workflowr)
+```
+
+
+## Prepare the input: GWAS summary statistics, Reference (region info, SNP info), Prediction model (weights)
+
+### GWAS Sum Stats 
+
+The CAD summary statistics data I used was accessed from website: https://www.nature.com/articles/s41588-022-01233-6 . I filtered the original data to maintain the MAF between (0.01, 0.99). The sample size was 1165690.
+
+```{r}
+## GWAS z scores (which is the same as no LD version). Build: GRCh37. 
+load("z_snp.RData")
+gwas_n <- 1165690
+
+```
+
+
+### Reference
+
+Here I got the region info from the package cTWAS. SNP info was also accessed from reference panel of cTWAS website.
+Another thing to notice: genome build needs to be matched. (Here: GRCh38 / hg38)
+
+```{r}
+## Reference: genome build 38, needs to match prediction models! 
+# Region def (which is the same as no LD version)
+region_file <- system.file("extdata/ldetect", "EUR.b38.ldetect.regions.RDS", package = "ctwas")
+region_info <- readRDS(region_file)
+
+# LD reference
+LD_dir <- "/project2/mstephens/wcrouse/UKB_LDR_0.1"
+current_dir <- "/project/xinhe/xizhi/cTWAS_2024"
+genome_version <- "b38"
+
+LD_filestem <- sprintf("ukb_%s_0.1_chr%s.R_snp.%s_%s", genome_version, region_info$chrom, 
+                       region_info$start, region_info$stop)
+
+region_metatable <- region_info
+region_metatable$LD_file <- file.path(LD_dir, paste0(LD_filestem, ".RDS"))
+region_metatable$SNP_file <- file.path(LD_dir, paste0(LD_filestem, ".Rvar"))
+head(region_metatable)
+
+res <- create_snp_LD_map(region_metatable)
+region_info <- res$region_info
+snp_map <- res$snp_map
+LD_map <- res$LD_map
+```
+
+
+### Prediction model
+
+The prediction model was accessed from GTEx. The molecular traits were expression, splicing and stability. Here, I included all tissues related to artery: Aorta, Coronary, Tibial.
+
+
+```{r}
+## Prediction models: all artery tissues with eqtl, sqtl, stability-qtl
+# Artery_Aorta
+artery_aorta_eqtl <- "mashr_eqtl/eqtl/mashr/mashr_Artery_Aorta.db"
+artery_aorta_sqtl <- "mashr_sqtl/sqtl/mashr/mashr_Artery_Aorta.db"
+artery_aorta_stabqtl <- "/project2/xinhe/shared_data/multigroup_ctwas/weights/Munro_alt_stability_PredictDB/Artery_Aorta.db"
+
+# Artery_Coronary
+artery_coronary_eqtl <- "mashr_eqtl/eqtl/mashr/mashr_Artery_Coronary.db"
+artery_coronary_sqtl <- "mashr_sqtl/sqtl/mashr/mashr_Artery_Coronary.db"
+artery_coronary_stabqtl <- "/project2/xinhe/shared_data/multigroup_ctwas/weights/Munro_alt_stability_PredictDB/Artery_Coronary.db"
+
+# Artery_Tibial
+artery_tibial_eqtl <- "mashr_eqtl/eqtl/mashr/mashr_Artery_Tibial.db"
+artery_tibial_sqtl <- "mashr_sqtl/sqtl/mashr/mashr_Artery_Tibial.db"
+artery_tibial_stabqtl <- "/project2/xinhe/shared_data/multigroup_ctwas/weights/Munro_alt_stability_PredictDB/Artery_Tibial.db"
+
+```
+
+
+### Harmonization
+
+#### Harmonize GWAS summary statistics and reference
+
+```{r}
+## Harmonize GWAS sum stats
+z_snp <- preprocess_z_snp(z_snp, snp_map, 
+                          drop_multiallelic = TRUE, 
+                          drop_strand_ambig = TRUE,
+                          varID_converter_fun = convert_to_ukb_varIDs)
+
+```
+
+
+#### Harmonize prediction models
+
+```{r}
+# Artery_Aorta
+# artery_aorta_eqtl_weights <- preprocess_weights(artery_aorta_eqtl,
+#                                     region_info,
+#                                     gwas_snp_ids = z_snp$id,
+#                                     snp_map = snp_map,
+#                                     type = "expression",
+#                                     context = "Aorta",
+#                                     weight_name = "Artery_expression",
+#                                     weight_format = "PredictDB",
+#                                     drop_strand_ambig = TRUE,
+#                                     scale_predictdb_weights = TRUE,
+#                                     load_predictdb_LD = TRUE,
+#                                     filter_protein_coding_genes = TRUE,
+#                                     varID_converter_fun = convert_to_ukb_varIDs,
+#                                     ncore = 6)
+# 
+# artery_aorta_sqtl_weights <- preprocess_weights(artery_aorta_sqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 type = "splicing",
+#                                                 context = "Aorta",
+#                                                 weight_name = "Artery_splicing",
+#                                                 weight_format = "PredictDB",
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = TRUE,
+#                                                 load_predictdb_LD = TRUE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 6)
+# 
+# artery_aorta_stabqtl_weights <- preprocess_weights(artery_aorta_stabqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 LD_map = LD_map,
+#                                                 type = "stability",
+#                                                 context = "Aorta",
+#                                                 weight_name = "Artery_stability",
+#                                                 weight_format = "PredictDB",
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = FALSE,
+#                                                 load_predictdb_LD = FALSE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 6)
+# 
+# aorta_weights <- c(artery_aorta_eqtl_weights, artery_aorta_sqtl_weights, artery_aorta_stabqtl_weights)
+# save(aorta_weights, file = "aorta_weights.RData")
+load("aorta_weights.RData")
+
+
+# # Artery_Coronary
+# artery_coronary_eqtl_weights <- preprocess_weights(artery_coronary_eqtl,
+#                                     region_info,
+#                                     gwas_snp_ids = z_snp$id,
+#                                     snp_map = snp_map,
+#                                     type = "expression",
+#                                     context = "Coronary",
+#                                     weight_name = "Coronary_expression",
+#                                     weight_format = "PredictDB",
+#                                     drop_strand_ambig = TRUE,
+#                                     scale_predictdb_weights = TRUE,
+#                                     load_predictdb_LD = TRUE,
+#                                     filter_protein_coding_genes = TRUE,
+#                                     varID_converter_fun = convert_to_ukb_varIDs,
+#                                     ncore = 6)
+# 
+# artery_coronary_sqtl_weights <- preprocess_weights(artery_coronary_sqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 type = "splicing",
+#                                                 context = "Coronary",
+#                                                 weight_name = "Coronary_splicing",
+#                                                 weight_format = "PredictDB",
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = TRUE,
+#                                                 load_predictdb_LD = TRUE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 6)
+# 
+# artery_coronary_stabqtl_weights <- preprocess_weights(artery_coronary_stabqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 LD_map = LD_map,
+#                                                 type = "stability",
+#                                                 context = "Coronary",
+#                                                 weight_name = "Coronary_stability",
+#                                                 weight_format = "PredictDB",
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = FALSE,
+#                                                 load_predictdb_LD = FALSE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 6)
+# 
+# coronary_weights <- c(artery_coronary_eqtl_weights, artery_coronary_sqtl_weights, artery_coronary_stabqtl_weights)
+# save(coronary_weights, file = "coronary_weights.RData")
+load("coronary_weights.RData")
+
+# # Artery_Tibial
+# artery_tibial_eqtl_weights <- preprocess_weights(artery_tibial_eqtl,
+#                                                  region_info,
+#                                                  gwas_snp_ids = z_snp$id,
+#                                                  snp_map = snp_map,
+#                                                  type = "expression",
+#                                                  context = "Tibial",
+#                                                  weight_name = "Tibial_expression",
+#                                                  weight_format = "PredictDB",
+#                                                  drop_strand_ambig = TRUE,
+#                                                  scale_predictdb_weights = TRUE,
+#                                                  load_predictdb_LD = TRUE,
+#                                                  filter_protein_coding_genes = TRUE,
+#                                                  varID_converter_fun = convert_to_ukb_varIDs,
+#                                                  ncore = 6)
+# 
+# artery_tibial_sqtl_weights <- preprocess_weights(artery_tibial_sqtl,
+#                                                  region_info,
+#                                                  gwas_snp_ids = z_snp$id,
+#                                                  snp_map = snp_map,
+#                                                  type = "splicing",
+#                                                  context = "Tibial",
+#                                                  weight_name = "Tibial_splicing",
+#                                                  weight_format = "PredictDB",
+#                                                  drop_strand_ambig = TRUE,
+#                                                  scale_predictdb_weights = TRUE,
+#                                                  load_predictdb_LD = TRUE,
+#                                                  filter_protein_coding_genes = TRUE,
+#                                                  varID_converter_fun = convert_to_ukb_varIDs,
+#                                                  ncore = 6)
+# 
+# artery_tibial_stabqtl_weights <- preprocess_weights(artery_tibial_stabqtl,
+#                                                     region_info,
+#                                                     gwas_snp_ids = z_snp$id,
+#                                                     snp_map = snp_map,
+#                                                     LD_map = LD_map,
+#                                                     type = "stability",
+#                                                     context = "Tibial",
+#                                                     weight_name = "Tibial_stability",
+#                                                     weight_format = "PredictDB",
+#                                                     drop_strand_ambig = TRUE,
+#                                                     scale_predictdb_weights = FALSE,
+#                                                     load_predictdb_LD = FALSE,
+#                                                     filter_protein_coding_genes = TRUE,
+#                                                     varID_converter_fun = convert_to_ukb_varIDs,
+#                                                     ncore = 6)
+# 
+# tibial_weights <- c(artery_tibial_eqtl_weights, artery_tibial_sqtl_weights, artery_tibial_stabqtl_weights)
+# save(tibial_weights, file = "tibial_weights.RData")
+load("tibial_weights.RData")
+
+overall_weights <- c(aorta_weights, coronary_weights, tibial_weights)
+
+```
+
+
+
+
+## Run cTWAS
+
+After all the input files ready, run the cTWAS.
+
+```{r}
+# ctwas_res_LD <- ctwas_sumstats(z_snp,
+#                             overall_weights,
+#                             region_info,
+#                             LD_map,
+#                             snp_map,
+#                             thin = 0.1,
+#                             maxSNP = 20000,
+#                             min_group_size = 100,
+#                             group_prior_var_structure = "shared_type",
+#                             filter_L = TRUE,
+#                             filter_nonSNP_PIP = FALSE,
+#                             min_nonSNP_PIP = 0.5,
+#                             min_abs_corr = 0.1,
+#                             ncore = 6,
+#                             ncore_LD = 4,
+#                             save_cor = TRUE,
+#                             cor_dir = "./cor_matrix",
+#                             force_compute_cor = FALSE)
+
+# save(ctwas_res_LD, file = "ctwas_res_LD.RData")
+load("ctwas_res_LD.RData")
+z_gene <- ctwas_res_LD$z_gene
+param <- ctwas_res_LD$param
+finemap_res <- ctwas_res_LD$finemap_res
+susie_alpha_res <- ctwas_res_LD$susie_alpha_res
+boundary_genes <- ctwas_res_LD$boundary_genes
+region_data <- ctwas_res_LD$region_data
+screen_res <- ctwas_res_LD$screen_res
+```
+
+Since we found more than 200 signals and it's quite different than before (no LD version), the results would be suspicious. It's probably due to LD mismatch issue, leading to many false positive findings. Thus, we need to take extra actions to post-processing results. 
+
+
+## Deal with LD mismatch
+
+Here we computed total non-SNP PIPs for the regions. The non-SNP PIP of a region is the sum of PIPs of all molecular traits in that region. We also limit to credible sets by setting filter_cs = TRUE. We can then select regions with total non-SNP PIPs > 0.8 to run LD mismatch diagnosis.
+
+First, we detected problematic SNPs among all variants in a region.
+
+```{r}
+## Deal with LD mismatch
+nonSNP_PIPs <- compute_region_nonSNP_PIPs(finemap_res, filter_cs = TRUE)
+selected_region_ids <- names(nonSNP_PIPs)[nonSNP_PIPs > 0.8]
+# res_diag <- diagnose_LD_mismatch_susie(region_ids = selected_region_ids, 
+#                                   z_snp = z_snp, 
+#                                   LD_map = LD_map, 
+#                                   gwas_n = gwas_n,
+#                                   p_diff_thresh = 5e-8,
+#                                   ncore = 1)
+# save(res_diag, file = "res_diag.RData")
+load("res_diag.RData")
+problematic_snps <- res_diag$problematic_snps
+flipped_snps <- res_diag$flipped_snps
+condz_stats <- res_diag$condz_stats
+
+```
+
+Then, we used the list of problematic SNPs to identify the molecular traits whose results may be affected by LD-mismatch. We would then run SuSiE fine-mapping with L = 1 in the regions containing these molecular traits, assuming a single causal signal in such a region. 
+
+We chose the genes with some plausibility of being risk genes (abs(Z-score) > 3, by default) and problematic SNPs in their weights. We would then select regions containing these problematic genes.
+
+```{r}
+problematic_genes <- get_problematic_genes(problematic_snps, 
+                                           overall_weights, 
+                                           z_gene,
+                                           z_thresh = 3)
+
+problematic_region_ids <- unique(finemap_res[finemap_res$id %in% problematic_genes, "region_id"])
+
+
+```
+
+After that, we rerun the fine-mapping without LD information for the problematic regions.
+
+```{r}
+# if (length(problematic_region_ids) > 0) {
+#   rerun_region_data <- screen_res$screened_region_data[problematic_region_ids]
+#   finemap_noLD_res <- finemap_regions_noLD(rerun_region_data, 
+#                                            group_prior = NULL,
+#                                            group_prior_var = NULL)
+# }
+# save(finemap_noLD_res, file = "finemap_noLD_res.RData")
+
+load("finemap_noLD_res.RData")
+finemap_res_noLD <- finemap_noLD_res$finemap_res
+susie_alpha_res_noLD <- finemap_noLD_res$susie_alpha_res
+```
+
+We can check the fine-mapping results (without LD) for the problematic genes:
+
+```{r}
+head(finemap_res_noLD[finemap_res_noLD$id %in% problematic_genes,])
+sum(finemap_res_noLD$id %in% problematic_genes)
+sum(finemap_res_noLD$id %in% finemap_res$id)
+```
+
+Now we remove the problematic genes in finemap_res and susie_alpha_res. (Not sure if it's correct here)
+
+```{r}
+finemap_res <- finemap_res[!(finemap_res$id %in% problematic_genes), ]
+susie_alpha_res <- susie_alpha_res[!(susie_alpha_res$id %in% problematic_genes), ]
+
+```
+
+
+## Summarize and visualize results
+
+### View the parameters and create converge plots
+
+```{r}
+make_convergence_plots(param, gwas_n, colors = c("#E69F00", "#56B4E9", "#009E73",
+                                                 "#F0E442", "#0072B2", "#D55E00",
+                                                 "#CC79A7", "#999999", "#E1A3FF",
+                                                 "#3C3C3C"))
+
+ctwas_parameters <- summarize_param(param, gwas_n)
+ctwas_parameters
+
+```
+
+
+### Create the pie chart to see the percentage of heritability
+
+```{r}
+data <- data.frame(
+  category = names(ctwas_parameters$prop_heritability),
+  percentage = ctwas_parameters$prop_heritability
+)
+
+data$percentage_label <- paste0(round(data$percentage * 100, 1), "%")
+
+ggplot(data, aes(x = "", y = percentage, fill = category)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  theme_void() +  # Remove background and axes
+  geom_text(aes(label = percentage_label),
+            position = position_stack(vjust = 0.5), size = 5) +
+  scale_fill_manual(values = c("#FF9999", "#66B2FF", "#E1A3FF", "#FFCC99", "#CCCCFF", "#99CCCC", "#99FF99",
+                               "#E69F00", "#999999", "#009E73")) +
+  labs(fill = "Category") +
+  ggtitle("Percent of heritability")
+
+```
+
+
+### Create a diagnostic plot
+
+```{r}
+## Create a diagnostic plot
+ggplot(data = finemap_res[finemap_res$type!="SNP",], aes(x = abs(z), y = susie_pip)) +
+  geom_point() +
+  labs(x = "abs(z-scores)", y = "PIPs") +
+  theme_minimal()
+
+```
+
+
+### Add gene annotations (make sure the genome build match and mapping table correct) 
+
+```{r}
+mapping_table <- readRDS("/project2/xinhe/shared_data/multigroup_ctwas/weights/mapping_files/PredictDB_mapping.RDS")
+mapping_munro <- readRDS("/project2/xinhe/shared_data/multigroup_ctwas/weights/mapping_files/Munro_mapping.RDS")
+mapping_two <- rbind(mapping_table,mapping_munro)
+finemap_res <- anno_finemap_res(finemap_res,
+                                snp_map = snp_map,
+                                mapping_table = mapping_two,
+                                add_gene_annot = TRUE,
+                                map_by = "molecular_id",
+                                drop_unmapped = TRUE,
+                                add_position = TRUE,
+                                use_gene_pos = "mid")
+
+finemap_res_show <- finemap_res[!is.na(finemap_res$cs) & finemap_res$type !="SNP",]
+
+DT::datatable(finemap_res_show,
+              caption = htmltools::tags$caption(
+                style = 'caption-side: topleft; text-align = left; color:black;',
+                'The annotated fine-mapping results, ones within credible sets are shown'),
+              options = list(pageLength = 10))
+
+```
+
+
+### Compute gene PIPs across different types of molecular traits 
+
+```{r}
+susie_alpha_res <- anno_susie_alpha_res(susie_alpha_res,
+                                        mapping_table = mapping_two,
+                                        map_by = "molecular_id",
+                                        drop_unmapped = TRUE)
+
+combined_pip_by_type <- combine_gene_pips(susie_alpha_res,
+                                          group_by = "gene_name",
+                                          by = "type",
+                                          method = "combine_cs",
+                                          filter_cs = TRUE,
+                                          include_cs_id = TRUE)
+
+
+combined_pip_by_type_sig <- subset(combined_pip_by_type, combined_pip > 0.8)
+DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption(style = 'caption-side: topleft; text-align = left; color:black;','Gene PIPs, only genes with credible sets are shown'),
+              options = list(pageLength = 10))
+
+
+```
+
+
