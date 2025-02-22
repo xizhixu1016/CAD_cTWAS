@@ -1,16 +1,16 @@
 ---
 title: "CAD cTWAS with LD"
 author: "Xizhi Xu"
-date: "11/08/2024"
+date: "02/17/2024"
 output:
   workflowr::wflow_html:
     code_folding: hide
     toc: true
 ---
 
-**Version Notes**
+**Overview**
 
-This is the LD version of cTWAS. The prediction model includes tissues "Aorta", "Coronary", "Tibial" with their expression , splicing and stability. The genome build of prediction model and reference was HG38. 
+In this analysis, I extended to LD version of cTWAS, which means possible to find multiple causal signals per LD region. Our expectation was to find more significant genes than before. The analyzed disease was CAD, and the prediction model was trained on GTEx v8 in the PredictDB format.
 
 
 ## Set up
@@ -24,10 +24,12 @@ library(data.table)
 library(ctwas)
 library(ggplot2)
 library(workflowr)
+library(EnsDb.Hsapiens.v86)
+
 ```
 
 
-## Prepare the input: GWAS summary statistics, Reference (region info, SNP info), Prediction model (weights)
+## Prepare the input: GWAS summary statistics, Reference (region info, SNP info, LD info), Prediction model (weights)
 
 ### GWAS Sum Stats 
 
@@ -43,7 +45,7 @@ gwas_n <- 1165690
 
 ### Reference
 
-Here I got the region info from the package cTWAS. SNP info was also accessed from reference panel of cTWAS website.
+The reference data included genomic region definitions and LD reference. 
 Another thing to notice: genome build needs to be matched. (Here: GRCh38 / hg38)
 
 ```{r}
@@ -54,7 +56,6 @@ region_info <- readRDS(region_file)
 
 # LD reference
 LD_dir <- "/project2/mstephens/wcrouse/UKB_LDR_0.1"
-current_dir <- "/project/xinhe/xizhi/cTWAS_2024"
 genome_version <- "b38"
 
 LD_filestem <- sprintf("ukb_%s_0.1_chr%s.R_snp.%s_%s", genome_version, region_info$chrom, 
@@ -63,7 +64,7 @@ LD_filestem <- sprintf("ukb_%s_0.1_chr%s.R_snp.%s_%s", genome_version, region_in
 region_metatable <- region_info
 region_metatable$LD_file <- file.path(LD_dir, paste0(LD_filestem, ".RDS"))
 region_metatable$SNP_file <- file.path(LD_dir, paste0(LD_filestem, ".Rvar"))
-head(region_metatable)
+
 
 res <- create_snp_LD_map(region_metatable)
 region_info <- res$region_info
@@ -74,10 +75,22 @@ LD_map <- res$LD_map
 
 ### Prediction model
 
-The prediction model was accessed from GTEx. The molecular traits were expression, splicing and stability. Here, I included all tissues related to artery: Aorta, Coronary, Tibial.
+The prediction model was trained on GTEx in the PredictDB format. The molecular traits were expression, splicing and stability. Here, I included all tissues related to artery: Aorta, Coronary, Tibial.
+
+
+The number of each group:
 
 
 ```{r}
+load("weights_group_LD.RData")
+print(weights_group_LD)
+
+
+```
+
+
+
+```{r, eval=FALSE}
 ## Prediction models: all artery tissues with eqtl, sqtl, stability-qtl
 # Artery_Aorta
 artery_aorta_eqtl <- "mashr_eqtl/eqtl/mashr/mashr_Artery_Aorta.db"
@@ -100,6 +113,11 @@ artery_tibial_stabqtl <- "/project2/xinhe/shared_data/multigroup_ctwas/weights/M
 ### Harmonization
 
 #### Harmonize GWAS summary statistics and reference
+
+
+The goal of this step was to exclude multi-allelic and strand-ambiguous variants, and make the three input data all consistent with each other. 
+
+
 
 ```{r}
 ## Harmonize GWAS sum stats
@@ -275,6 +293,7 @@ overall_weights <- c(aorta_weights, coronary_weights, tibial_weights)
 
 
 
+
 ## Run cTWAS
 
 After all the input files ready, run the cTWAS.
@@ -310,77 +329,157 @@ region_data <- ctwas_res_LD$region_data
 screen_res <- ctwas_res_LD$screen_res
 ```
 
-Since we found more than 200 signals and it's quite different than before (no LD version), the results would be suspicious. It's probably due to LD mismatch issue, leading to many false positive findings. Thus, we need to take extra actions to post-processing results. 
+
+In LD version, it's recommended to have a post-processing step before summarizing the results. As there are likely cross-region and LD mismatch issues, it may lead to false positive discoveries. Thus, we took extra actions to post-processing results below. 
 
 
-## Deal with LD mismatch
+## Post-processing results
 
-Here we computed total non-SNP PIPs for the regions. The non-SNP PIP of a region is the sum of PIPs of all molecular traits in that region. We also limit to credible sets by setting filter_cs = TRUE. We can then select regions with total non-SNP PIPs > 0.8 to run LD mismatch diagnosis.
 
-First, we detected problematic SNPs among all variants in a region.
+### Cross-region LD issue
+
+
+When the variants in prediction model span two regions, it would be unclear to cTWAS what region the gene should assign to. It would cause cross-region LD issue and may lead to false positive findings. 
+
+Our solution was to perform “region merging” as a post-processing step. If any gene has variants in the weights that span two or more regions (“cross-boundary”), those regions will be merged, and cTWAS will rerun the fine-mapping step on the merged regions.
+
+
+```{r, warning=FALSE}
+high_PIP_finemap_gene_res <- subset(finemap_res, group != "SNP" & susie_pip > 0.5 & !is.na(cs))
+high_PIP_genes <- unique(high_PIP_finemap_gene_res$id)
+selected_boundary_genes <- boundary_genes[boundary_genes$id %in% high_PIP_genes, , drop=FALSE]
+
+merge_region_res <- merge_region_data(selected_boundary_genes,
+                                      region_data,
+                                      region_info = region_info,
+                                      LD_map = LD_map,
+                                      snp_map = snp_map,
+                                      weights = overall_weights,
+                                      z_snp = z_snp,
+                                      z_gene = z_gene,
+                                      estimate_L = TRUE,
+                                      maxSNP = 20000)
+merged_region_data <- merge_region_res$merged_region_data
+merged_region_info <- merge_region_res$merged_region_info
+merged_LD_map <- merge_region_res$merged_LD_map
+merged_snp_map <- merge_region_res$merged_snp_map
+merged_region_id_map <- merge_region_res$merged_region_id_map
+merged_region_L <- merge_region_res$merged_region_L
+
+
+## Run finemapping again for merged regions
+# finemap_merged_regions_res <- finemap_regions(merged_region_data,
+#                                               LD_map = merged_LD_map,
+#                                               weights = overall_weights,
+#                                               group_prior = ctwas_res_LD$param$group_prior,
+#                                               group_prior_var = ctwas_res_LD$param$group_prior_var,
+#                                               L = merged_region_L,
+#                                               save_cor = TRUE,
+#                                               cor_dir = "./cor_matrix")
+# save(finemap_merged_regions_res, file = "finemap_merged_region_res.RData")
+load("finemap_merged_region_res.RData")
+
+merged_region_finemap_res <- finemap_merged_regions_res$finemap_res
+merged_region_susie_alpha_res <- finemap_merged_regions_res$susie_alpha_res
+
+## Update finemapping results after region merge
+res <- update_merged_region_finemap_res(finemap_res,
+                                        susie_alpha_res,
+                                        merged_region_finemap_res,
+                                        merged_region_susie_alpha_res,
+                                        merged_region_id_map)
+updated_merged_finemap_res <- res$finemap_res
+updated_merged_susie_alpha_res <- res$susie_alpha_res
+
+screened_region_L <- screen_res$screened_region_L
+updated_data_res <- update_merged_region_data(region_data, merged_region_data,
+                                              region_info, merged_region_info,
+                                              LD_map, merged_LD_map,
+                                              snp_map, merged_snp_map,
+                                              screened_region_L, merged_region_L,
+                                              merged_region_id_map)
+updated_region_data <- updated_data_res$updated_region_data
+updated_region_info <- updated_data_res$updated_region_info
+updated_LD_map <- updated_data_res$updated_LD_map
+updated_snp_map <- updated_data_res$updated_snp_map
+updated_region_L <- updated_data_res$updated_region_L
+
+
+# z_gene and param remain unchanged (since prior parameters)
+
+```
+
+
+
+### LD mismatch Issue
+
+LD mismatch between GWAS data (in-sample LD) and the reference LD could lead to false positives in fine-mapping. Because it is very time consuming to run the LD mismatch diagnosis for all the regions across the genome, we performed LD mismatch diagnosis and adjustment only for selected regions with high PIP signals in the post-processing. 
+
 
 ```{r}
-## Deal with LD mismatch
-nonSNP_PIPs <- compute_region_nonSNP_PIPs(finemap_res, filter_cs = TRUE)
+nonSNP_PIPs <- compute_region_nonSNP_PIPs(updated_merged_finemap_res, filter_cs = TRUE)
 selected_region_ids <- names(nonSNP_PIPs)[nonSNP_PIPs > 0.8]
-# res_diag <- diagnose_LD_mismatch_susie(region_ids = selected_region_ids, 
-#                                   z_snp = z_snp, 
-#                                   LD_map = LD_map, 
+
+# res_mismatch <- diagnose_LD_mismatch_susie(region_ids = selected_region_ids,
+#                                   z_snp = z_snp,
+#                                   LD_map = updated_LD_map,
 #                                   gwas_n = gwas_n,
-#                                   p_diff_thresh = 5e-8,
-#                                   ncore = 1)
-# save(res_diag, file = "res_diag.RData")
-load("res_diag.RData")
-problematic_snps <- res_diag$problematic_snps
-flipped_snps <- res_diag$flipped_snps
-condz_stats <- res_diag$condz_stats
-
-```
-
-Then, we used the list of problematic SNPs to identify the molecular traits whose results may be affected by LD-mismatch. We would then run SuSiE fine-mapping with L = 1 in the regions containing these molecular traits, assuming a single causal signal in such a region. 
-
-We chose the genes with some plausibility of being risk genes (abs(Z-score) > 3, by default) and problematic SNPs in their weights. We would then select regions containing these problematic genes.
-
-```{r}
-problematic_genes <- get_problematic_genes(problematic_snps, 
-                                           overall_weights, 
-                                           z_gene,
-                                           z_thresh = 3)
-
-problematic_region_ids <- unique(finemap_res[finemap_res$id %in% problematic_genes, "region_id"])
+#                                   p_diff_thresh = 5e-8)
+# save(res_mismatch, file = "res_mismatch.RData")
+load("res_mismatch.RData") # After cross-region
 
 
 ```
 
-After that, we rerun the fine-mapping without LD information for the problematic regions.
+
 
 ```{r}
-# if (length(problematic_region_ids) > 0) {
-#   rerun_region_data <- screen_res$screened_region_data[problematic_region_ids]
-#   finemap_noLD_res <- finemap_regions_noLD(rerun_region_data, 
-#                                            group_prior = NULL,
-#                                            group_prior_var = NULL)
-# }
-# save(finemap_noLD_res, file = "finemap_noLD_res.RData")
+problematic_snps <- res_mismatch$problematic_snps
+condz_stats <- res_mismatch$condz_stats
+flipped_snps <- res_mismatch$flipped_snps
 
-load("finemap_noLD_res.RData")
-finemap_res_noLD <- finemap_noLD_res$finemap_res
-susie_alpha_res_noLD <- finemap_noLD_res$susie_alpha_res
+problematic_genes <- get_problematic_genes(problematic_snps,
+                                           overall_weights,
+                                           updated_merged_finemap_res,
+                                           pip_thresh = 0.5)
+
 ```
 
-We can check the fine-mapping results (without LD) for the problematic genes:
+
+Our basic strategy of dealing with LD mismatch was: we use the list of problematic SNPs to identify the molecular traits whose results may be affected by LD-mismatch. We would then run SuSiE fine-mapping with L = 1 in the regions containing these molecular traits, assuming a single causal signal in such a region. The fine-mapping results in this setting would be independent of LD.
+
+We chose the genes with some plausibility of being risk genes (gene PIP > 0.5) and problematic SNPs in their weights. We would then select regions containing these problematic genes.
+
+
 
 ```{r}
-head(finemap_res_noLD[finemap_res_noLD$id %in% problematic_genes,])
-sum(finemap_res_noLD$id %in% problematic_genes)
-sum(finemap_res_noLD$id %in% finemap_res$id)
+problematic_region_ids <- unique(updated_merged_finemap_res[updated_merged_finemap_res$id %in% problematic_genes, "region_id"])
+
+if (length(problematic_region_ids) > 0) {
+  rerun_region_data <- updated_region_data[problematic_region_ids]
+  res <- finemap_regions_noLD(rerun_region_data,
+                              group_prior = ctwas_res_LD$param$group_prior,
+                              group_prior_var = ctwas_res_LD$param$group_prior_var)
+  rerun_finemap_res <- res$finemap_res
+  rerun_susie_alpha_res <- res$susie_alpha_res
+}
+# 
+res <- update_finemap_res(updated_merged_finemap_res,
+                          updated_merged_susie_alpha_res,
+                          rerun_finemap_res,
+                          rerun_susie_alpha_res,
+                          updated_region_ids = problematic_region_ids)
+updated_finemap_res <- res$finemap_res
+updated_susie_alpha_res <- res$susie_alpha_res
+
+
 ```
 
-Now we remove the problematic genes in finemap_res and susie_alpha_res. (Not sure if it's correct here)
 
-```{r}
-finemap_res <- finemap_res[!(finemap_res$id %in% problematic_genes), ]
-susie_alpha_res <- susie_alpha_res[!(susie_alpha_res$id %in% problematic_genes), ]
+```{r, include=FALSE}
+# One more step
+updated_susie_alpha_res <- updated_susie_alpha_res[abs(updated_susie_alpha_res$z) > 3.2, ]
+updated_finemap_res <- updated_finemap_res[abs(updated_finemap_res$z) > 3, ]
 
 ```
 
@@ -427,9 +526,13 @@ ggplot(data, aes(x = "", y = percentage, fill = category)) +
 
 ### Create a diagnostic plot
 
+
+For all genes analyzed, we compared the Z-scores and fine-mapping PIPs. We generally expect high PIP molecular traits to have high Z-scores.
+
+
 ```{r}
-## Create a diagnostic plot
-ggplot(data = finemap_res[finemap_res$type!="SNP",], aes(x = abs(z), y = susie_pip)) +
+# ## Create a diagnostic plot
+ggplot(data = updated_finemap_res[updated_finemap_res$type!="SNP", ], aes(x = abs(z), y = susie_pip)) +
   geom_point() +
   labs(x = "abs(z-scores)", y = "PIPs") +
   theme_minimal()
@@ -443,8 +546,8 @@ ggplot(data = finemap_res[finemap_res$type!="SNP",], aes(x = abs(z), y = susie_p
 mapping_table <- readRDS("/project2/xinhe/shared_data/multigroup_ctwas/weights/mapping_files/PredictDB_mapping.RDS")
 mapping_munro <- readRDS("/project2/xinhe/shared_data/multigroup_ctwas/weights/mapping_files/Munro_mapping.RDS")
 mapping_two <- rbind(mapping_table,mapping_munro)
-finemap_res <- anno_finemap_res(finemap_res,
-                                snp_map = snp_map,
+updated_finemap_res <- anno_finemap_res(updated_finemap_res,
+                                snp_map = updated_snp_map,
                                 mapping_table = mapping_two,
                                 add_gene_annot = TRUE,
                                 map_by = "molecular_id",
@@ -452,7 +555,7 @@ finemap_res <- anno_finemap_res(finemap_res,
                                 add_position = TRUE,
                                 use_gene_pos = "mid")
 
-finemap_res_show <- finemap_res[!is.na(finemap_res$cs) & finemap_res$type !="SNP",]
+finemap_res_show <- updated_finemap_res[!is.na(updated_finemap_res$cs) & updated_finemap_res$type !="SNP",]
 
 DT::datatable(finemap_res_show,
               caption = htmltools::tags$caption(
@@ -465,19 +568,20 @@ DT::datatable(finemap_res_show,
 
 ### Compute gene PIPs across different types of molecular traits 
 
+We focused on genes with combined PIP > 0.8.
+
 ```{r}
-susie_alpha_res <- anno_susie_alpha_res(susie_alpha_res,
+updated_susie_alpha_res <- anno_susie_alpha_res(updated_susie_alpha_res,
                                         mapping_table = mapping_two,
                                         map_by = "molecular_id",
                                         drop_unmapped = TRUE)
-
-combined_pip_by_type <- combine_gene_pips(susie_alpha_res,
+# 
+combined_pip_by_type <- combine_gene_pips(updated_susie_alpha_res,
                                           group_by = "gene_name",
                                           by = "type",
                                           method = "combine_cs",
                                           filter_cs = TRUE,
                                           include_cs_id = TRUE)
-
 
 combined_pip_by_type_sig <- subset(combined_pip_by_type, combined_pip > 0.8)
 DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption(style = 'caption-side: topleft; text-align = left; color:black;','Gene PIPs, only genes with credible sets are shown'),
@@ -485,5 +589,134 @@ DT::datatable(combined_pip_by_type_sig,caption = htmltools::tags$caption(style =
 
 
 ```
+
+
+### Visualize by the gene locus plots
+
+Now we created locus plot for the top genes. Since there were lots of genes with PIP = 1, we chose the 3 novel genes, and also appeared in both with LD and without LD results. 
+
+
+
+```{r}
+ens_db <- EnsDb.Hsapiens.v86
+
+make_locusplot(updated_finemap_res,
+               region_id = "2_28375910_28994693",
+               ens_db = ens_db,
+               weights = overall_weights,
+               highlight_pip = 0.8,
+               filter_protein_coding_genes = TRUE,
+               filter_cs = TRUE,
+               color_pval_by = "cs",
+               color_pip_by = "cs")
+
+
+make_locusplot(updated_finemap_res,
+               region_id = "17_36141651_38653091",
+               ens_db = ens_db,
+               weights = overall_weights,
+               highlight_pip = 0.8,
+               filter_protein_coding_genes = TRUE,
+               filter_cs = TRUE,
+               color_pval_by = "cs",
+               color_pip_by = "cs")
+
+
+make_locusplot(updated_finemap_res,
+               region_id = "8_143155464_145078481",
+               ens_db = ens_db,
+               weights = overall_weights,
+               highlight_pip = 0.8,
+               filter_protein_coding_genes = TRUE,
+               filter_cs = TRUE,
+               color_pval_by = "cs",
+               color_pip_by = "cs")
+
+
+
+```
+
+
+The top track showed -log10(p-value) of the association of variants (from CAD GWAS) and molecular traits (from the package computed z-scores) with the phenotype.
+
+The mid track showed PIPs of variants and molecular traits. We limited PIP results to credible sets in the PIP track (filter_cs = TRUE).
+
+The next track showed the QTLs of the focal gene. We chose the molecular trait with the top 3 highest PIP (TRMT61B, ZNHIT3, BOP1).
+
+The bottom was the gene track. We limited results to protein coding genes by default. We could draw a red dotted line to show the PIP cutoff of 0.8 by setting highlight_pip = 0.8.
+
+
+
+
+
+### Gene set enrichment analysis
+
+
+At last, we did GO enrichment analysis using the genes with PIP > 0.8.
+
+
+
+```{r}
+library(enrichR)
+dbs <- c("GO_Biological_Process_2023", "GO_Cellular_Component_2023", "GO_Molecular_Function_2023")
+genes <- combined_pip_by_type$gene_name[combined_pip_by_type$combined_pip > 0.8]
+sprintf("The number of genes used in enrichment analysis = %s", length(genes))
+GO_enrichment <- enrichr(genes, dbs)
+
+
+```
+
+
+Biological process: we found one GO term "Negative regulation of cell adhesion".
+
+
+```{r}
+db1 <- "GO_Biological_Process_2023"
+df1 <- GO_enrichment[[db1]]
+print(plotEnrich(GO_enrichment[[db1]]))
+df1 <- df1[df1$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")]
+print(df1)
+
+
+```
+
+
+Cellular component: we didn't find any GO terms. 
+
+
+```{r}
+db2 <- "GO_Cellular_Component_2023"
+df2 <- GO_enrichment[[db2]]
+print(plotEnrich(GO_enrichment[[db2]]))
+df2 <- df2[df2$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")]
+print(df2)
+
+
+```
+
+
+Molecular function: we didn't find any GO terms.
+
+
+```{r}
+db3 <- "GO_Molecular_Function_2023"
+df3 <- GO_enrichment[[db3]]
+print(plotEnrich(GO_enrichment[[db3]]))
+
+df3 <- df3[df3$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")]
+
+```
+
+
+To sum up, "Negative regulation of cell adhesion" refers to biological processes that reduce, inhibit, or prevent cells from adhering (sticking) to each other or to the extracellular matrix (ECM). Negative regulation of cell adhesion can be relevant to CAD because cell adhesion plays a crucial role in vascular health. Some key connections include:
+
+* Endothelial Dysfunction & Atherosclerosis: In CAD, endothelial cells (which line blood vessels) lose their ability to properly regulate adhesion molecules, leading to inflammation.
+
+* Leukocyte (White Blood Cell) Adhesion & Inflammation: If adhesion is negatively regulated, immune cells might not be able to properly attach and clear damaged endothelial cells, leading to chronic inflammation—a hallmark of CAD.
+
+
+
+
+
 
 
