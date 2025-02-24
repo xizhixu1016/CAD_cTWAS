@@ -9,11 +9,7 @@ output:
     toc: true
 ---
 
-
 **This is the page of main images/plots for my project.**
-
-
-
 
 ```{r setup, include=FALSE}
 setwd("/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS")
@@ -21,61 +17,24 @@ library(workflowr)
 
 ```
 
+![Figure 1: The overall workflow of cTWAS.](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/ctwas_workflow.png)
 
-![Figure 1: The overall workflow of cTWAS.](ctwas_workflow.png) 
+![(A) Heritability pie plot](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/heritability.png)
 
+![(B) Bubble plot](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/bubble_plot.png)
 
+Figure 2: Genetic architecture of model: (A) Heritability pie plot: the percentage of heritability explained by different molecular QTLs across three tissues (Aorta, Coronary, and Tibial) and SNPs. (B) Bubble plot: the heritability of coronary artery disease (CAD) explained by different types of molecular QTLs across three tissues (Aorta, Coronary, and Tibial).
 
+![(A) Biological process](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/biological_process_enrichment.png)
 
+![(B) Cellular component](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/cellular_component_enrich.png)
 
+![(C) Molecular function](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/molecular_function_enrich.png)
 
+Figure 3: Gene enrichment analysis. (A)Biological process. (B) Cellular component. (C) Molecular function.
 
-![(A) Heritability pie plot](heritability.png)
+![(A) TRMT61B](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/TRMT61B.png)
 
-
-
-![(B) Bubble plot](bubble_plot.png)
-
-
-
-
-Figure 2: Genetic architecture of model:  (A) Heritability pie plot: the percentage of heritability explained by different molecular QTLs across three tissues (Aorta, Coronary, and Tibial) and SNPs.  (B) Bubble plot: the heritability of coronary artery disease (CAD) explained by different types of molecular QTLs across three tissues (Aorta, Coronary, and Tibial).
-
-
-
-
-
-
-![(A) Biological process](biological_process_enrichment.png)
-
-
-
-
-![(B) Cellular component](cellular_component_enrich.png)
-
-
-
-![(C) Molecular function](molecular_function_enrich.png)
-
-
-
-Figure 3: Gene enrichment analysis. (A)Biological process. (B) Cellular component. (C) Molecular function. 
-
-
-
-
-
-![(A) TRMT61B](TRMT61B.png)
-
-
-
-![(B) ZNHIT3](ZNHIT3.png)
-
-
+![(B) ZNHIT3](/project/xinhe/xizhi/cTWAS_2024/CAD_cTWAS/ZNHIT3.png)
 
 Figure 4: Top gene locus plots. (A) TRMT61B. (B) ZNHIT3.
-
-
-
-
-
