@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Xizhi" />
+
+<meta name="date" content="2025-06-28" />
+
+<title>CAD cTWAS With Updated Version</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.22/datatables.js"></script>
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CAD_cTWAS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/xizhixu1016/CAD_cTWAS">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">CAD cTWAS With Updated Version</h1>
+<h4 class="author">Xizhi</h4>
+<h4 class="date">2025-06-28</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-06-30
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>CAD_cTWAS/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version 1.7.1). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20241004code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20241004)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20241004code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20241004)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree98f12a8d5a47ff66b6f9c85918ef1154f2f4504ctargetblank98f12a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/98f12a8d5a47ff66b6f9c85918ef1154f2f4504c" target="_blank">98f12a8</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree98f12a8d5a47ff66b6f9c85918ef1154f2f4504ctargetblank98f12a8a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/98f12a8d5a47ff66b6f9c85918ef1154f2f4504c" target="_blank">98f12a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+
+Untracked files:
+    Untracked:  TRMT61B.png
+    Untracked:  ZNHIT3.png
+    Untracked:  all_artery_weights.RData
+    Untracked:  aorta_weights.RData
+    Untracked:  biological_process_enrichment.png
+    Untracked:  bubble_plot.png
+    Untracked:  cellular_component_enrich.png
+    Untracked:  combined_pip_by_type_sig.RData
+    Untracked:  coronary_weights.RData
+    Untracked:  ctwas_res_LD.RData
+    Untracked:  ctwas_res_LD_525.RData
+    Untracked:  ctwas_res_all.RData
+    Untracked:  ctwas_res_noLD.RData
+    Untracked:  ctwas_workflow.png
+    Untracked:  finemap_merged_region_res.RData
+    Untracked:  finemap_noLD_res.RData
+    Untracked:  heritability.png
+    Untracked:  molecular_function_enrich.png
+    Untracked:  res.RData
+    Untracked:  res_diag.RData
+    Untracked:  res_mismatch.RData
+    Untracked:  tibial_weights.RData
+    Untracked:  weights.RData
+    Untracked:  weights_group.RData
+    Untracked:  weights_group_LD.RData
+    Untracked:  z_snp.RData
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/CAD_cTWAS_LD_525.Rmd</code>) and HTML (<code>docs/CAD_cTWAS_LD_525.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/98f12a8d5a47ff66b6f9c85918ef1154f2f4504c/analysis/CAD_cTWAS_LD_525.Rmd" target="_blank">98f12a8</a>
+</td>
+<td>
+Xizhi
+</td>
+<td>
+2025-06-30
+</td>
+<td>
+Publish the updated version of cTWAS
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<p><strong>Version Notes</strong></p>
+<p>This is the newest version (V0.5.25) of ctwas. The main difference between it and the previous versions was the change of an argument called <code>null_method</code>: now <code>null_method</code> sets to “ctwas”, which assumes no signals in a region under the null. The prediction model includes tissues “Aorta”, “Coronary”, “Tibial” with their expression , splicing and stability. The genome build of prediction model and reference was HG38.</p>
+<div id="set-up" class="section level2">
+<h2>Set up</h2>
+<p>Load the required packages.</p>
+<pre class="r"><code>### Set up
+setwd(&quot;/project/xinhe/xizhi/Slurm&quot;)
+library(data.table)
+library(ctwas)
+library(ggplot2)
+library(workflowr)
+# library(EnsDb.Hsapiens.v86)</code></pre>
+</div>
+<div id="prepare-the-input-gwas-summary-statistics-reference-region-info-snp-info-prediction-model-weights" class="section level2">
+<h2>Prepare the input: GWAS summary statistics, Reference (region info, SNP info), Prediction model (weights)</h2>
+<div id="gwas-summary-statistics" class="section level3">
+<h3>GWAS summary statistics</h3>
+<p>The CAD summary statistics data I used was accessed from website: <a href="https://www.nature.com/articles/s41588-022-01233-6" class="uri">https://www.nature.com/articles/s41588-022-01233-6</a> . I filtered the original data to maintain the MAF between (0.01, 0.99). The sample size was 1165690.</p>
+<pre class="r"><code>## GWAS z scores (which is the same as no LD version). Build: GRCh37. 
+load(&quot;z_snp.RData&quot;)
+gwas_n &lt;- 1165690</code></pre>
+</div>
+<div id="reference" class="section level3">
+<h3>Reference</h3>
+<p>Here I got the region info from the package cTWAS. SNP info was also accessed from reference panel of cTWAS website. Another thing to notice: genome build needs to be matched. (Here: GRCh38 / hg38)</p>
+<pre class="r"><code>## Reference: genome build 38, needs to match prediction models! 
+# Region def (which is the same as no LD version)
+region_file &lt;- system.file(&quot;extdata/ldetect&quot;, &quot;EUR.b38.ldetect.regions.RDS&quot;, package = &quot;ctwas&quot;)
+region_info &lt;- readRDS(region_file)
+
+# LD reference
+LD_dir &lt;- &quot;/project2/mstephens/wcrouse/UKB_LDR_0.1&quot;
+genome_version &lt;- &quot;b38&quot;
+
+LD_filestem &lt;- sprintf(&quot;ukb_%s_0.1_chr%s.R_snp.%s_%s&quot;, genome_version, region_info$chrom, 
+                       region_info$start, region_info$stop)
+
+region_metatable &lt;- region_info
+region_metatable$LD_file &lt;- file.path(LD_dir, paste0(LD_filestem, &quot;.RDS&quot;))
+region_metatable$SNP_file &lt;- file.path(LD_dir, paste0(LD_filestem, &quot;.Rvar&quot;))
+
+
+res &lt;- create_snp_LD_map(region_metatable)
+region_info &lt;- res$region_info # same as before? 
+snp_map &lt;- res$snp_map
+LD_map &lt;- res$LD_map</code></pre>
+</div>
+<div id="prediction-model" class="section level3">
+<h3>Prediction model</h3>
+<p>The prediction model was trained on GTEx in the PredictDB format. The molecular traits were expression, splicing and stability. Here, I included all tissues related to artery: Aorta, Coronary, Tibial.</p>
+<pre class="r"><code>## Prediction models: all artery tissues with eqtl, sqtl, stability-qtl
+# Artery_Aorta
+artery_aorta_eqtl &lt;- &quot;mashr_eqtl/eqtl/mashr/mashr_Artery_Aorta.db&quot;
+artery_aorta_sqtl &lt;- &quot;mashr_sqtl/sqtl/mashr/mashr_Artery_Aorta.db&quot;
+artery_aorta_stabqtl &lt;- &quot;/project/xinhe/xsun/weights_training/weights/stapa/L5/stability_Artery_Aorta.db&quot;
+
+# Artery_Coronary
+artery_coronary_eqtl &lt;- &quot;mashr_eqtl/eqtl/mashr/mashr_Artery_Coronary.db&quot;
+artery_coronary_sqtl &lt;- &quot;mashr_sqtl/sqtl/mashr/mashr_Artery_Coronary.db&quot;
+artery_coronary_stabqtl &lt;- &quot;/project/xinhe/xsun/weights_training/weights/stapa/L5/stability_Artery_Coronary.db&quot;
+
+# Artery_Tibial
+artery_tibial_eqtl &lt;- &quot;mashr_eqtl/eqtl/mashr/mashr_Artery_Tibial.db&quot;
+artery_tibial_sqtl &lt;- &quot;mashr_sqtl/sqtl/mashr/mashr_Artery_Tibial.db&quot;
+artery_tibial_stabqtl &lt;- &quot;/project/xinhe/xsun/weights_training/weights/stapa/L5/stability_Artery_Tibial.db&quot;</code></pre>
+</div>
+<div id="data-harmonization" class="section level3">
+<h3>Data harmonization</h3>
+<div id="harmonize-gwas-z-scores-and-the-reference-data" class="section level4">
+<h4>Harmonize GWAS Z-scores and the reference data</h4>
+<p>The goal of this step was to exclude multi-allelic and strand-ambiguous variants, and make the three input data all consistent with each other.</p>
+<pre class="r"><code>## Harmonize GWAS sum stats
+z_snp &lt;- preprocess_z_snp(z_snp, snp_map, 
+                          drop_multiallelic = TRUE, 
+                          drop_strand_ambig = TRUE,
+                          varID_converter_fun = convert_to_ukb_varIDs)</code></pre>
+<pre><code>2025-06-30 03:52:11 INFO::Preprocessing z_snp...
+2025-06-30 03:52:18 INFO::z_snp has 9155485 variants in total
+2025-06-30 03:52:18 INFO::Convert variant IDs
+2025-06-30 03:52:37 INFO::9142078 variants left after filtering by the reference SNPs.
+2025-06-30 03:52:38 INFO::Remove 14480 multiallelic variants
+2025-06-30 03:52:41 INFO::Harmonize 9127598 variants between GWAS and the reference
+2025-06-30 03:52:56 INFO::Flip signs for 1272047 (13.94%) variants
+2025-06-30 03:52:56 INFO::Remove 1272047 strand ambiguous variants
+2025-06-30 03:52:56 INFO::7855551 variants left after preprocessing and harmonization.</code></pre>
+</div>
+<div id="harmonize-prediction-models" class="section level4">
+<h4>Harmonize prediction models</h4>
+<pre class="r"><code># Artery_Aorta
+# artery_aorta_eqtl_weights &lt;- preprocess_weights(artery_aorta_eqtl,
+#                                     region_info,
+#                                     gwas_snp_ids = z_snp$id,
+#                                     snp_map = snp_map,
+#                                     LD_map = LD_map,
+#                                     type = &quot;expression&quot;,
+#                                     context = &quot;Aorta&quot;,
+#                                     weight_name = &quot;Aorta_expression&quot;,
+#                                     weight_format = &quot;PredictDB&quot;,
+#                                     drop_strand_ambig = TRUE,
+#                                     scale_predictdb_weights = TRUE,
+#                                     load_predictdb_LD = TRUE,
+#                                     filter_protein_coding_genes = TRUE,
+#                                     varID_converter_fun = convert_to_ukb_varIDs,
+#                                     ncore = 2)
+# # #
+# artery_aorta_sqtl_weights &lt;- preprocess_weights(artery_aorta_sqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 LD_map = LD_map,
+#                                                 type = &quot;splicing&quot;,
+#                                                 context = &quot;Aorta&quot;,
+#                                                 weight_name = &quot;Aorta_splicing&quot;,
+#                                                 weight_format = &quot;PredictDB&quot;,
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = TRUE,
+#                                                 load_predictdb_LD = TRUE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 2)
+# # #
+# artery_aorta_stabqtl_weights &lt;- preprocess_weights(artery_aorta_stabqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 LD_map = LD_map,
+#                                                 type = &quot;stability&quot;,
+#                                                 context = &quot;Aorta&quot;,
+#                                                 weight_name = &quot;Aorta_stability&quot;,
+#                                                 weight_format = &quot;PredictDB&quot;,
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = FALSE,
+#                                                 load_predictdb_LD = FALSE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 2)
+# #
+# aorta_weights &lt;- c(artery_aorta_eqtl_weights, artery_aorta_sqtl_weights, artery_aorta_stabqtl_weights)
+# save(aorta_weights, file = &quot;aorta_weights.RData&quot;)
+load(&quot;aorta_weights.RData&quot;)
+
+# # Artery_Coronary
+# artery_coronary_eqtl_weights &lt;- preprocess_weights(artery_coronary_eqtl,
+#                                     region_info,
+#                                     gwas_snp_ids = z_snp$id,
+#                                     snp_map = snp_map,
+#                                     LD_map = LD_map,
+#                                     type = &quot;expression&quot;,
+#                                     context = &quot;Coronary&quot;,
+#                                     weight_name = &quot;Coronary_expression&quot;,
+#                                     weight_format = &quot;PredictDB&quot;,
+#                                     drop_strand_ambig = TRUE,
+#                                     scale_predictdb_weights = TRUE,
+#                                     load_predictdb_LD = TRUE,
+#                                     filter_protein_coding_genes = TRUE,
+#                                     varID_converter_fun = convert_to_ukb_varIDs,
+#                                     ncore = 2)
+# #
+# artery_coronary_sqtl_weights &lt;- preprocess_weights(artery_coronary_sqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 LD_map = LD_map,
+#                                                 type = &quot;splicing&quot;,
+#                                                 context = &quot;Coronary&quot;,
+#                                                 weight_name = &quot;Coronary_splicing&quot;,
+#                                                 weight_format = &quot;PredictDB&quot;,
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = TRUE,
+#                                                 load_predictdb_LD = TRUE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 2)
+# 
+# artery_coronary_stabqtl_weights &lt;- preprocess_weights(artery_coronary_stabqtl,
+#                                                 region_info,
+#                                                 gwas_snp_ids = z_snp$id,
+#                                                 snp_map = snp_map,
+#                                                 LD_map = LD_map,
+#                                                 type = &quot;stability&quot;,
+#                                                 context = &quot;Coronary&quot;,
+#                                                 weight_name = &quot;Coronary_stability&quot;,
+#                                                 weight_format = &quot;PredictDB&quot;,
+#                                                 drop_strand_ambig = TRUE,
+#                                                 scale_predictdb_weights = FALSE,
+#                                                 load_predictdb_LD = FALSE,
+#                                                 filter_protein_coding_genes = TRUE,
+#                                                 varID_converter_fun = convert_to_ukb_varIDs,
+#                                                 ncore = 2)
+# 
+# coronary_weights &lt;- c(artery_coronary_eqtl_weights, artery_coronary_sqtl_weights, artery_coronary_stabqtl_weights)
+# save(coronary_weights, file = &quot;coronary_weights.RData&quot;)
+load(&quot;coronary_weights.RData&quot;)
+
+# # Artery_Tibial
+# artery_tibial_eqtl_weights &lt;- preprocess_weights(artery_tibial_eqtl,
+#                                                  region_info,
+#                                                  gwas_snp_ids = z_snp$id,
+#                                                  snp_map = snp_map,
+#                                                  LD_map = LD_map,
+#                                                  type = &quot;expression&quot;,
+#                                                  context = &quot;Tibial&quot;,
+#                                                  weight_name = &quot;Tibial_expression&quot;,
+#                                                  weight_format = &quot;PredictDB&quot;,
+#                                                  drop_strand_ambig = TRUE,
+#                                                  scale_predictdb_weights = TRUE,
+#                                                  load_predictdb_LD = TRUE,
+#                                                  filter_protein_coding_genes = TRUE,
+#                                                  varID_converter_fun = convert_to_ukb_varIDs,
+#                                                  ncore = 2)
+# 
+# artery_tibial_sqtl_weights &lt;- preprocess_weights(artery_tibial_sqtl,
+#                                                  region_info,
+#                                                  gwas_snp_ids = z_snp$id,
+#                                                  snp_map = snp_map,
+#                                                  LD_map = LD_map,
+#                                                  type = &quot;splicing&quot;,
+#                                                  context = &quot;Tibial&quot;,
+#                                                  weight_name = &quot;Tibial_splicing&quot;,
+#                                                  weight_format = &quot;PredictDB&quot;,
+#                                                  drop_strand_ambig = TRUE,
+#                                                  scale_predictdb_weights = TRUE,
+#                                                  load_predictdb_LD = TRUE,
+#                                                  filter_protein_coding_genes = TRUE,
+#                                                  varID_converter_fun = convert_to_ukb_varIDs,
+#                                                  ncore = 2)
+# 
+# artery_tibial_stabqtl_weights &lt;- preprocess_weights(artery_tibial_stabqtl,
+#                                                     region_info,
+#                                                     gwas_snp_ids = z_snp$id,
+#                                                     snp_map = snp_map,
+#                                                     LD_map = LD_map,
+#                                                     type = &quot;stability&quot;,
+#                                                     context = &quot;Tibial&quot;,
+#                                                     weight_name = &quot;Tibial_stability&quot;,
+#                                                     weight_format = &quot;PredictDB&quot;,
+#                                                     drop_strand_ambig = TRUE,
+#                                                     scale_predictdb_weights = FALSE,
+#                                                     load_predictdb_LD = FALSE,
+#                                                     filter_protein_coding_genes = TRUE,
+#                                                     varID_converter_fun = convert_to_ukb_varIDs,
+#                                                     ncore = 2)
+# 
+# tibial_weights &lt;- c(artery_tibial_eqtl_weights, artery_tibial_sqtl_weights, artery_tibial_stabqtl_weights)
+# save(tibial_weights, file = &quot;tibial_weights.RData&quot;)
+load(&quot;tibial_weights.RData&quot;)
+# 
+overall_weights &lt;- c(aorta_weights, coronary_weights, tibial_weights)</code></pre>
+</div>
+</div>
+</div>
+<div id="run-ctwas" class="section level2">
+<h2>Run cTWAS</h2>
+<p>After all the inputs ready, run the cTWAS main functions.</p>
+<pre class="r"><code>### Run cTWAS (Version 5.25) 
+# ctwas_res_LD_525 &lt;- ctwas_sumstats(z_snp,
+#                              overall_weights,
+#                              region_info,
+#                              LD_map,
+#                              snp_map,
+#                              thin = 1,
+#                              maxSNP = 20000,
+#                              min_group_size = 100,
+#                              group_prior_var_structure = &quot;shared_all&quot;,
+#                              min_nonSNP_PIP = 0.5,
+#                              min_abs_corr = 0.1,
+#                              ncore = 2,
+#                              ncore_LD = 1,
+#                              save_cor = TRUE,
+#                              cor_dir = &quot;./cor_matrix&quot;,
+#                              force_compute_cor = FALSE)
+# 
+# save(ctwas_res_LD_525, file = &quot;ctwas_res_LD_525.RData&quot;)
+load(&quot;ctwas_res_LD_525.RData&quot;)
+z_gene &lt;- ctwas_res_LD_525$z_gene
+param &lt;- ctwas_res_LD_525$param
+finemap_res &lt;- ctwas_res_LD_525$finemap_res
+susie_alpha_res &lt;- ctwas_res_LD_525$susie_alpha_res
+boundary_genes &lt;- ctwas_res_LD_525$boundary_genes
+region_data &lt;- ctwas_res_LD_525$region_data
+screen_res &lt;- ctwas_res_LD_525$screen_res</code></pre>
+</div>
+<div id="summarize-and-visualize-results" class="section level2">
+<h2>Summarize and visualize results</h2>
+<div id="view-the-parameters-and-create-converge-plots" class="section level3">
+<h3>View the parameters and create converge plots</h3>
+<pre class="r"><code>make_convergence_plots(param, gwas_n, colors = c(&quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;,
+                                                 &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;,
+                                                 &quot;#CC79A7&quot;, &quot;#999999&quot;, &quot;#E1A3FF&quot;,
+                                                 &quot;#3C3C3C&quot;))</code></pre>
+<p><img src="figure/CAD_cTWAS_LD_525.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ctwas_parameters &lt;- summarize_param(param, gwas_n, enrichment_test = &quot;fisher&quot;)
+ctwas_parameters</code></pre>
+<pre><code>$group_size
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+              10403               29657                6149                9496 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+              29290                4043               10600               30075 
+   Tibial|stability                 SNP 
+               7369             7855551 
+
+$group_prior
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+       5.021597e-03        1.527737e-03        6.949330e-04        1.532536e-03 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+       7.906239e-04        1.739986e-09        5.102625e-03        7.929386e-04 
+   Tibial|stability                 SNP 
+       1.232691e-05        7.276586e-05 
+
+$group_prior_var
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+           28.05485            28.05485            28.05485            28.05485 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+           28.05485            28.05485            28.05485            28.05485 
+   Tibial|stability                 SNP 
+           28.05485            28.05485 
+
+$log_enrichment
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+           4.234256            3.044296            2.256568            3.047432 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+           2.385575          -10.641125            4.250263            2.388499 
+   Tibial|stability 
+          -1.775462 
+
+$log_enrichment_se
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+          0.1442072           0.1542293           0.4853931           0.2652518 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+          0.2118914         377.0294211           0.1419275           0.2089233 
+   Tibial|stability 
+          3.3181833 
+
+$enrichment_pval
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+       3.467169e-74        5.733426e-42        1.192298e-03        1.933605e-15 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+       2.765544e-16        1.000000e+00        2.263822e-77        4.531678e-17 
+   Tibial|stability 
+       1.000000e+00 
+
+$group_pve
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+       1.257260e-03        1.090437e-03        1.028424e-04        3.502485e-04 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+       5.573322e-04        1.693068e-10        1.301740e-03        5.739447e-04 
+   Tibial|stability                 SNP 
+       2.186189e-06        1.375717e-02 
+
+$total_pve
+[1] 0.01899316
+
+$prop_heritability
+   Aorta|expression      Aorta|splicing     Aorta|stability Coronary|expression 
+       6.619542e-02        5.741209e-02        5.414706e-03        1.844076e-02 
+  Coronary|splicing  Coronary|stability   Tibial|expression     Tibial|splicing 
+       2.934383e-02        8.914091e-09        6.853730e-02        3.021849e-02 
+   Tibial|stability                 SNP 
+       1.151040e-04        7.243223e-01 </code></pre>
+</div>
+<div id="create-the-pie-chart-to-see-the-percentage-of-heritability" class="section level3">
+<h3>Create the pie chart to see the percentage of heritability</h3>
+<pre class="r"><code>data &lt;- data.frame(
+  category = names(ctwas_parameters$prop_heritability),
+  percentage = ctwas_parameters$prop_heritability
+)
+
+data$percentage_label &lt;- paste0(round(data$percentage * 100, 1), &quot;%&quot;)
+
+ggplot(data, aes(x = &quot;&quot;, y = percentage, fill = category)) +
+  geom_bar(stat = &quot;identity&quot;, width = 1) +
+  coord_polar(&quot;y&quot;, start = 0) +
+  theme_void() +  # Remove background and axes
+  geom_text(aes(label = percentage_label),
+            position = position_stack(vjust = 0.5), size = 5) +
+  scale_fill_manual(values = c(&quot;#FF9999&quot;, &quot;#66B2FF&quot;, &quot;#E1A3FF&quot;, &quot;#FFCC99&quot;, &quot;#CCCCFF&quot;, &quot;#99CCCC&quot;, &quot;#99FF99&quot;,
+                               &quot;#E69F00&quot;, &quot;#999999&quot;, &quot;#009E73&quot;)) +
+  labs(fill = &quot;Category&quot;) +
+  ggtitle(&quot;Percent of heritability&quot;)</code></pre>
+<p><img src="figure/CAD_cTWAS_LD_525.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="create-a-diagnostic-plot" class="section level3">
+<h3>Create a diagnostic plot</h3>
+<p>This step was to compare the Z-scores and fine-mapping PIPs. We generally expect high PIP molecular traits to have high Z-scores.</p>
+<p>In this case, we could see all of the points with high abs(Z-score) had high PIPs, except 1 point(?).</p>
+<pre class="r"><code>ggplot(data = finemap_res[finemap_res$type!=&quot;SNP&quot;,], aes(x = abs(z), y = susie_pip)) +
+  geom_point() +
+  labs(title = &quot;Original cTWAS results&quot;, x = &quot;abs(z-scores)&quot;, y = &quot;PIPs&quot;) +
+  xlim(0, 15) +
+  theme_minimal() </code></pre>
+<pre><code>Warning: Removed 3 rows containing missing values (`geom_point()`).</code></pre>
+<p><img src="figure/CAD_cTWAS_LD_525.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="add-gene-annotations-and-update-finemapping-results" class="section level3">
+<h3>Add gene annotations and update finemapping results</h3>
+<pre class="r"><code>mapping_table &lt;- readRDS(&quot;/project2/xinhe/shared_data/multigroup_ctwas/weights/mapping_files/PredictDB_mapping.RDS&quot;)
+mapping_munro &lt;- readRDS(&quot;/project2/xinhe/shared_data/multigroup_ctwas/weights/mapping_files/Munro_mapping.RDS&quot;)
+mapping_two &lt;- rbind(mapping_table,mapping_munro)
+finemap_res &lt;- anno_finemap_res(finemap_res,
+                                snp_map = snp_map,
+                                mapping_table = mapping_two,
+                                add_gene_annot = TRUE,
+                                map_by = &quot;molecular_id&quot;,
+                                drop_unmapped = TRUE,
+                                add_position = TRUE,
+                                use_gene_pos = &quot;mid&quot;)</code></pre>
+<pre><code>2025-06-30 03:53:22 INFO::Annotating fine-mapping result...
+2025-06-30 03:53:22 INFO::Map molecular traits to genes
+2025-06-30 03:53:23 INFO::Split PIPs for molecular traits mapped to multiple genes
+2025-06-30 03:53:26 INFO::Add gene positions
+2025-06-30 03:53:26 INFO::Add SNP positions</code></pre>
+</div>
+<div id="compute-gene-pips-across-different-types-of-mol-traits" class="section level3">
+<h3>Compute gene PIPs across different types of mol traits</h3>
+<pre class="r"><code>susie_alpha_res &lt;- anno_susie_alpha_res(susie_alpha_res,
+                                        mapping_table = mapping_two,
+                                        map_by = &quot;molecular_id&quot;,
+                                        drop_unmapped = TRUE)</code></pre>
+<pre><code>2025-06-30 03:53:29 INFO::Annotating susie alpha result...
+2025-06-30 03:53:30 INFO::Map molecular traits to genes
+2025-06-30 03:53:30 INFO::Split PIPs for molecular traits mapped to multiple genes</code></pre>
+<pre class="r"><code>combined_pip_by_type &lt;- combine_gene_pips(susie_alpha_res,
+                                          group_by = &quot;gene_name&quot;,
+                                          by = &quot;type&quot;,
+                                          method = &quot;combine_cs&quot;,
+                                          filter_cs = TRUE,
+                                          include_cs_id = TRUE)
+combined_pip_by_type_0.8 &lt;- subset(combined_pip_by_type, combined_pip &gt; 0.8)
+DT::datatable(combined_pip_by_type_0.8,caption = htmltools::tags$caption(style = &#39;caption-side: topleft; text-align = left; color:black;&#39;,&#39;Gene PIPs, only genes with credible sets are shown&#39;),
+              options = list(pageLength = 10))</code></pre>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-232a8e63d6aacd296363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-232a8e63d6aacd296363">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: topleft; text-align = left; color:black;\">Gene PIPs, only genes with credible sets are shown<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65"],["BOP1","GSTT2B","TBC1D7","TRMT61B","ZNF524","ZNHIT3","TGFB1","RGS19","ARL6IP6","LRP1","STOML1","DAB2IP","ZSCAN21","IFIH1","KYAT3","C6orf106","RNF40","DGKQ","UBQLN4","PTK7","PROCA1","ABCB8","CNNM2","ZNF641","CORO6","KDM3B","DCLRE1B","PARP12","FES","BCAS3","ADK","EIF2B2","FER","PSMA3-AS1","MAP1S","RNF38","ITIH3","HMGCR","RBM24","PHACTR1","MRAS","ZSCAN31","NBEAL1","PIGW","DBN1","NRP2","TWIST1","KCNE2","R3HDM2","KIAA0753","PDLIM7","CD300LG","UBA5","HEATR5B","ITIH4","RBM23","NFAT5","SLC22A5","NR3C1","ST3GAL3","PDXDC2P","UBN1","C9orf72","MIA3","NFU1"],["8_143155464_145078481.L1","22_23370460_24588236.L3,22_23370460_24588236.L1","6_13209156_14802693.L2,6_13209156_14802693.L1","2_28375910_28994693.L1","19_55216712_57009967.L1","17_36141651_38653091.L1","19_40478694_41625199.L5","20_63558827_64333810.L3,20_63558827_64333810.L2","2_151630268_153148542.L1,L4,2_151630268_153148542.L2,2_151630268_153148542.L3","12_55272053_57155077.L3,12_55272053_57155077.L2","15_73336373_76106283.L5,15_73336373_76106283.L1","9_119498019_122109043.L3,9_119498019_122109043.L1","7_99117851_100599028.L1","2_160913222_162647041.L2,2_160913222_162647041.L3","1_87662948_89600744.L3,1_87662948_89600744.L1","6_33268720_35487979.L3,6_33268720_35487979.L1","16_29025292_31371622.L2,L3","4_700926_1476986.L2,4_700926_1476986.L3","1_154797927_156366342.L3","6_42070983_43788432.L3","17_21387045_29007226.L1","7_151014417_152552721.L2","10_102620653_104935290.L3,10_102620653_104935290.L4","12_47321010_48608083.L3,12_47321010_48608083.L1","17_29007226_31459473.L3,17_29007226_31459473.L4","5_137040361_139885487.L3,L1","1_112730684_114331223.L3","7_139059933_140233377.L1","15_89932319_91621162.L1","17_59410151_61235394.L3","10_73662792_76947056.L1","14_72422907_75978424.L3","5_107928495_109298233.L3","14_57014544_58981618.L3","19_16263605_18299052.L3","9_34642246_36743286.L3","3_51797999_54047363.L4,3_51797999_54047363.L5","5_74463501_76503041.L2","6_14802693_17386174.L3","6_11790583_13209156.L3","3_137652241_140235755.L5","6_28050041_28949831.L3","2_201953914_204934518.L3","17_36141651_38653091.L2","5_176023592_177824506.L5","2_204934518_205870980.L5","7_16862445_19441924.L4","21_33853161_35152076.L4","12_57155077_58914885.L3","17_5838014_7414079.L5,17_5838014_7414079.L1","5_176023592_177824506.L2","17_43694719_44979537.L3","3_132117672_133533329.L3","2_35896940_37905569.L5","3_51797999_54047363.L1","14_22549721_24435917.L2","16_68807460_71020125.L1","5_130183332_132803957.L2","5_141266403_143601683.L3","1_43292786_44503511.L1","16_68807460_71020125.L3","16_3951195_5068344.L5","9_26111759_28224285.L3","1_222056878_224750818.L5","2_68912432_70528066.L2,L5"],[1,1,1,1,1,1,0.9999999999999702,0.9999999999878638,0.9999999894539756,0.999999896693455,0.999999600821371,0.9999987783429799,0.9999878785327186,0.999987326327597,0.9999750119622404,0.9999269071853689,0.9999042169041723,0.9998976706133919,0.999804273196344,0.9997979645513443,0.9997949836088496,0.9997620690596829,0.9996884095577925,0.9996162426304935,0.9995679523774115,0.9995078775111411,0.9994788368655895,0.9994073210410901,0.9994025445538619,0.9980726301053638,0.9963139408945981,0.9938242840070085,0.9929063410937783,0.9929063410909659,0.9929061525327728,0.9929003204166769,0.9924863983927366,0.9913223347856683,0.9892033834658673,0.9890645327694029,0.9890645322397972,0.9867960228776804,0.9860097595254618,0.9860097457127963,0.985786082678789,0.9857860825631236,0.9857860825331354,0.9857860823670773,0.9817106883154628,0.9815938379824477,0.9814666062314592,0.9772757889055549,0.977169867729341,0.9771051385473639,0.976694713732303,0.9766599678234883,0.9696333088156619,0.9696039023554563,0.9547347189321926,0.9547017954049223,0.9545987809907457,0.9317530276014033,0.9169365565498208,0.9157761161997844,0.8363459717186594],["8_143155464_145078481.L1","22_23370460_24588236.L3","6_13209156_14802693.L1",null,"19_55216712_57009967.L1","17_36141651_38653091.L1","19_40478694_41625199.L5","20_63558827_64333810.L3,20_63558827_64333810.L2",null,"12_55272053_57155077.L3,12_55272053_57155077.L2","15_73336373_76106283.L5",null,null,"2_160913222_162647041.L2",null,"6_33268720_35487979.L3","16_29025292_31371622.L2,L3","4_700926_1476986.L3","1_154797927_156366342.L3","6_42070983_43788432.L3","17_21387045_29007226.L1",null,"10_102620653_104935290.L3",null,"17_29007226_31459473.L3","5_137040361_139885487.L3,L1",null,null,null,null,"10_73662792_76947056.L1","14_72422907_75978424.L3",null,null,null,"9_34642246_36743286.L3",null,null,"6_14802693_17386174.L3","6_11790583_13209156.L3","3_137652241_140235755.L5",null,"2_201953914_204934518.L3","17_36141651_38653091.L2","5_176023592_177824506.L5","2_204934518_205870980.L5","7_16862445_19441924.L4","21_33853161_35152076.L4",null,null,null,null,null,null,null,null,null,null,"5_141266403_143601683.L3",null,null,null,"9_26111759_28224285.L3",null,null],[1,1,1,null,1,1,0.9999999999999702,0.9999999999878638,null,0.999999896693455,0.985786082666402,null,null,0.8597535393992268,null,0.1325428075524505,0.9999042169041723,0.9979510542956019,0.999804273196344,0.9997979645513443,0.9997949836088496,null,0.992815567911065,null,0.9857860826293687,0.9995078775111411,null,null,null,null,0.9963139408945981,0.9938242840070085,null,null,null,0.9929003204166769,null,null,0.9892033834658673,0.9890645327694029,0.9890645322397972,null,0.9860097595254618,0.9860097457127963,0.985786082678789,0.9857860825631236,0.9857860825331354,0.9857860823670773,null,null,null,null,null,null,null,null,null,null,0.9547347189321926,null,null,null,0.9169365565498208,null,null],[null,"22_23370460_24588236.L1","6_13209156_14802693.L2","2_28375910_28994693.L1",null,null,null,null,"2_151630268_153148542.L1,L4,2_151630268_153148542.L2,2_151630268_153148542.L3",null,"15_73336373_76106283.L1","9_119498019_122109043.L3,9_119498019_122109043.L1","7_99117851_100599028.L1","2_160913222_162647041.L3,2_160913222_162647041.L2","1_87662948_89600744.L3,1_87662948_89600744.L1","6_33268720_35487979.L1",null,"4_700926_1476986.L2",null,null,null,"7_151014417_152552721.L2","10_102620653_104935290.L4","12_47321010_48608083.L3,12_47321010_48608083.L1","17_29007226_31459473.L4",null,"1_112730684_114331223.L3","7_139059933_140233377.L1","15_89932319_91621162.L1","17_59410151_61235394.L3",null,null,"5_107928495_109298233.L3","14_57014544_58981618.L3","19_16263605_18299052.L3",null,"3_51797999_54047363.L4,3_51797999_54047363.L5","5_74463501_76503041.L2",null,null,null,"6_28050041_28949831.L3",null,null,null,null,null,null,"12_57155077_58914885.L3","17_5838014_7414079.L5,17_5838014_7414079.L1","5_176023592_177824506.L2","17_43694719_44979537.L3","3_132117672_133533329.L3","2_35896940_37905569.L5","3_51797999_54047363.L1","14_22549721_24435917.L2","16_68807460_71020125.L1","5_130183332_132803957.L2",null,"1_43292786_44503511.L1","16_68807460_71020125.L3","16_3951195_5068344.L5",null,"1_222056878_224750818.L5","2_68912432_70528066.L2,L5"],[null,0.1479323634938977,0.9764192155568641,1,null,null,null,null,0.9999999894539756,null,0.9999719163535501,0.9999987783429799,0.9999878785327186,0.998215141551373,0.9999750119622404,0.9999157389952295,null,0.9500575411107801,null,null,null,0.9997620690596829,0.9566297741630188,0.9996162426304935,0.9696039021950996,null,0.9994788368655895,0.9994073210410901,0.9994025445538619,0.9980726301053638,null,null,0.9929063410937783,0.9929063410909659,0.9929061525327728,null,0.9924863983927366,0.9913223347856683,null,null,null,0.9867960228776804,null,null,null,null,null,null,0.9817106883154628,0.9815938379824477,0.9814666062314592,0.9772757889055549,0.977169867729341,0.9771051385473639,0.976694713732303,0.9766599678234883,0.9696333088156619,0.9696039023554563,null,0.9547017954049223,0.9545987809907457,0.9317530276014033,null,0.9157761161997844,0.8363459717186594],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene_name<\/th>\n      <th>combined_cs_id<\/th>\n      <th>combined_pip<\/th>\n      <th>expression_cs_id<\/th>\n      <th>expression_pip<\/th>\n      <th>splicing_cs_id<\/th>\n      <th>splicing_pip<\/th>\n      <th>stability_cs_id<\/th>\n      <th>stability_pip<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[3,5,7,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Red Hat Enterprise Linux 8.4 (Ootpa)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.3.13-el8-x86_64/lib/libopenblas_skylakexp-r0.3.13.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] ggplot2_3.4.3     ctwas_0.5.26      data.table_1.14.8 workflowr_1.7.1  
+
+loaded via a namespace (and not attached):
+  [1] colorspace_2.1-0            rjson_0.2.21               
+  [3] ellipsis_0.3.2              rprojroot_2.0.3            
+  [5] XVector_0.38.0              locuszoomr_0.3.5           
+  [7] GenomicRanges_1.50.2        fs_1.5.2                   
+  [9] rstudioapi_0.14             farver_2.1.1               
+ [11] DT_0.22                     ggrepel_0.9.3              
+ [13] bit64_4.0.5                 AnnotationDbi_1.60.2       
+ [15] fansi_1.0.4                 xml2_1.3.3                 
+ [17] codetools_0.2-18            logging_0.10-108           
+ [19] cachem_1.0.8                knitr_1.42                 
+ [21] jsonlite_1.8.7              Rsamtools_2.14.0           
+ [23] dbplyr_2.3.2                png_0.1-7                  
+ [25] readr_2.1.4                 compiler_4.2.0             
+ [27] httr_1.4.7                  Matrix_1.6-4               
+ [29] fastmap_1.1.1               lazyeval_0.2.2             
+ [31] cli_3.6.2                   later_1.3.0                
+ [33] htmltools_0.5.7             prettyunits_1.1.1          
+ [35] tools_4.2.0                 gtable_0.3.4               
+ [37] glue_1.6.2                  GenomeInfoDbData_1.2.9     
+ [39] dplyr_1.1.3                 rappdirs_0.3.3             
+ [41] Rcpp_1.0.11                 Biobase_2.58.0             
+ [43] jquerylib_0.1.4             vctrs_0.6.3                
+ [45] Biostrings_2.66.0           rtracklayer_1.58.0         
+ [47] crosstalk_1.2.0             xfun_0.40                  
+ [49] stringr_1.5.0               ps_1.7.0                   
+ [51] irlba_2.3.5                 lifecycle_1.0.4            
+ [53] restfulr_0.0.15             ensembldb_2.22.0           
+ [55] XML_3.99-0.9                getPass_0.2-2              
+ [57] zlibbioc_1.44.0             zoo_1.8-11                 
+ [59] scales_1.2.1                gggrid_0.2-0               
+ [61] hms_1.1.3                   promises_1.2.0.1           
+ [63] MatrixGenerics_1.10.0       ProtGenerics_1.30.0        
+ [65] parallel_4.2.0              SummarizedExperiment_1.28.0
+ [67] AnnotationFilter_1.22.0     LDlinkR_1.3.0              
+ [69] yaml_2.3.7                  curl_4.3.2                 
+ [71] memoise_2.0.1               sass_0.4.1                 
+ [73] biomaRt_2.54.1              stringi_1.7.12             
+ [75] RSQLite_2.3.1               highr_0.9                  
+ [77] S4Vectors_0.36.2            BiocIO_1.8.0               
+ [79] GenomicFeatures_1.50.4      BiocGenerics_0.44.0        
+ [81] filelock_1.0.2              BiocParallel_1.32.6        
+ [83] GenomeInfoDb_1.34.9         rlang_1.1.1                
+ [85] pkgconfig_2.0.3             matrixStats_1.2.0          
+ [87] bitops_1.0-7                evaluate_0.15              
+ [89] lattice_0.20-45             purrr_1.0.2                
+ [91] labeling_0.4.3              GenomicAlignments_1.34.1   
+ [93] htmlwidgets_1.6.2           cowplot_1.1.1              
+ [95] bit_4.0.5                   processx_3.5.3             
+ [97] tidyselect_1.2.0            magrittr_2.0.3             
+ [99] AMR_3.0.0                   R6_2.5.1                   
+[101] IRanges_2.32.0              generics_0.1.3             
+[103] DelayedArray_0.24.0         DBI_1.1.3                  
+[105] withr_2.5.0                 pgenlibr_0.3.6             
+[107] pillar_1.9.0                whisker_0.4                
+[109] KEGGREST_1.38.0             RCurl_1.98-1.12            
+[111] mixsqp_0.3-54               tibble_3.2.1               
+[113] crayon_1.5.2                utf8_1.2.3                 
+[115] BiocFileCache_2.6.1         plotly_4.10.0              
+[117] tzdb_0.4.0                  rmarkdown_2.21             
+[119] progress_1.2.2              grid_4.2.0                 
+[121] blob_1.2.4                  callr_3.7.0                
+[123] git2r_0.30.1                digest_0.6.33              
+[125] tidyr_1.3.0                 httpuv_1.6.5               
+[127] stats4_4.2.0                munsell_0.5.0              
+[129] viridisLite_0.4.2           bslib_0.3.1                </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
