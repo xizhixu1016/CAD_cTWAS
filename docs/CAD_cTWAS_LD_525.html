@@ -406,7 +406,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-06-30
+<strong>Last updated:</strong> 2025-07-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -497,16 +497,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStreee2377464f7e08e53b285b43d2bb2d779b2a5dd54targetblanke237746a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/e2377464f7e08e53b285b43d2bb2d779b2a5dd54" target="_blank">e237746</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree8983bc26979ec6941d9411bf878d3bb8ea0f5e3btargetblank8983bc2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/8983bc26979ec6941d9411bf878d3bb8ea0f5e3b" target="_blank">8983bc2</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStreee2377464f7e08e53b285b43d2bb2d779b2a5dd54targetblanke237746a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree8983bc26979ec6941d9411bf878d3bb8ea0f5e3btargetblank8983bc2a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/e2377464f7e08e53b285b43d2bb2d779b2a5dd54" target="_blank">e237746</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/8983bc26979ec6941d9411bf878d3bb8ea0f5e3b" target="_blank">8983bc2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -585,6 +585,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/8983bc26979ec6941d9411bf878d3bb8ea0f5e3b/analysis/CAD_cTWAS_LD_525.Rmd" target="_blank">8983bc2</a>
+</td>
+<td>
+Xizhi
+</td>
+<td>
+2025-07-01
+</td>
+<td>
+Publish the updated version of cTWAS
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/399fa1f3a9070077afc481085131bbc3ed326324/docs/CAD_cTWAS_LD_525.html" target="_blank">399fa1f</a>
+</td>
+<td>
+Xizhi
+</td>
+<td>
+2025-06-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/e2377464f7e08e53b285b43d2bb2d779b2a5dd54/analysis/CAD_cTWAS_LD_525.Rmd" target="_blank">e237746</a>
 </td>
 <td>
@@ -649,7 +683,8 @@ library(data.table)
 library(ctwas)
 library(ggplot2)
 library(workflowr)
-# library(EnsDb.Hsapiens.v86)</code></pre>
+library(enrichR)
+library(EnsDb.Hsapiens.v86)</code></pre>
 </div>
 <div id="prepare-the-input-gwas-summary-statistics-reference-region-info-snp-info-prediction-model-weights" class="section level2">
 <h2>Prepare the input: GWAS summary statistics, Reference (region info, SNP info), Prediction model (weights)</h2>
@@ -714,15 +749,15 @@ z_snp &lt;- preprocess_z_snp(z_snp, snp_map,
                           drop_multiallelic = TRUE, 
                           drop_strand_ambig = TRUE,
                           varID_converter_fun = convert_to_ukb_varIDs)</code></pre>
-<pre><code>2025-06-30 22:11:11 INFO::Preprocessing z_snp...
-2025-06-30 22:11:18 INFO::z_snp has 9155485 variants in total
-2025-06-30 22:11:18 INFO::Convert variant IDs
-2025-06-30 22:11:39 INFO::9142078 variants left after filtering by the reference SNPs.
-2025-06-30 22:11:41 INFO::Remove 14480 multiallelic variants
-2025-06-30 22:11:44 INFO::Harmonize 9127598 variants between GWAS and the reference
-2025-06-30 22:12:01 INFO::Flip signs for 1272047 (13.94%) variants
-2025-06-30 22:12:02 INFO::Remove 1272047 strand ambiguous variants
-2025-06-30 22:12:02 INFO::7855551 variants left after preprocessing and harmonization.</code></pre>
+<pre><code>2025-07-01 03:03:11 INFO::Preprocessing z_snp...
+2025-07-01 03:03:18 INFO::z_snp has 9155485 variants in total
+2025-07-01 03:03:18 INFO::Convert variant IDs
+2025-07-01 03:03:37 INFO::9142078 variants left after filtering by the reference SNPs.
+2025-07-01 03:03:38 INFO::Remove 14480 multiallelic variants
+2025-07-01 03:03:43 INFO::Harmonize 9127598 variants between GWAS and the reference
+2025-07-01 03:04:01 INFO::Flip signs for 1272047 (13.94%) variants
+2025-07-01 03:04:01 INFO::Remove 1272047 strand ambiguous variants
+2025-07-01 03:04:01 INFO::7855551 variants left after preprocessing and harmonization.</code></pre>
 </div>
 <div id="harmonize-prediction-models" class="section level4">
 <h4>Harmonize prediction models</h4>
@@ -1155,11 +1190,11 @@ finemap_res &lt;- anno_finemap_res(finemap_res,
                                 drop_unmapped = TRUE,
                                 add_position = TRUE,
                                 use_gene_pos = &quot;mid&quot;)</code></pre>
-<pre><code>2025-06-30 22:12:31 INFO::Annotating fine-mapping result...
-2025-06-30 22:12:31 INFO::Map molecular traits to genes
-2025-06-30 22:12:31 INFO::Split PIPs for molecular traits mapped to multiple genes
-2025-06-30 22:12:34 INFO::Add gene positions
-2025-06-30 22:12:34 INFO::Add SNP positions</code></pre>
+<pre><code>2025-07-01 03:04:28 INFO::Annotating fine-mapping result...
+2025-07-01 03:04:28 INFO::Map molecular traits to genes
+2025-07-01 03:04:29 INFO::Split PIPs for molecular traits mapped to multiple genes
+2025-07-01 03:04:32 INFO::Add gene positions
+2025-07-01 03:04:32 INFO::Add SNP positions</code></pre>
 </div>
 <div id="compute-gene-pips-across-different-types-of-mol-traits" class="section level3">
 <h3>Compute gene PIPs across different types of mol traits</h3>
@@ -1167,9 +1202,9 @@ finemap_res &lt;- anno_finemap_res(finemap_res,
                                         mapping_table = mapping_two,
                                         map_by = &quot;molecular_id&quot;,
                                         drop_unmapped = TRUE)</code></pre>
-<pre><code>2025-06-30 22:12:38 INFO::Annotating susie alpha result...
-2025-06-30 22:12:38 INFO::Map molecular traits to genes
-2025-06-30 22:12:39 INFO::Split PIPs for molecular traits mapped to multiple genes</code></pre>
+<pre><code>2025-07-01 03:04:35 INFO::Annotating susie alpha result...
+2025-07-01 03:04:35 INFO::Map molecular traits to genes
+2025-07-01 03:04:36 INFO::Split PIPs for molecular traits mapped to multiple genes</code></pre>
 <pre class="r"><code>combined_pip_by_type &lt;- combine_gene_pips(susie_alpha_res,
                                           group_by = &quot;gene_name&quot;,
                                           by = &quot;type&quot;,
@@ -1181,6 +1216,36 @@ DT::datatable(combined_pip_by_type_0.8,caption = htmltools::tags$caption(style =
               options = list(pageLength = 10))</code></pre>
 <div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-232a8e63d6aacd296363" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-232a8e63d6aacd296363">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: topleft; text-align = left; color:black;\">Gene PIPs, only genes with credible sets are shown<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65"],["BOP1","GSTT2B","TBC1D7","TRMT61B","ZNF524","ZNHIT3","TGFB1","RGS19","ARL6IP6","LRP1","STOML1","DAB2IP","ZSCAN21","IFIH1","KYAT3","C6orf106","RNF40","DGKQ","UBQLN4","PTK7","PROCA1","ABCB8","CNNM2","ZNF641","CORO6","KDM3B","DCLRE1B","PARP12","FES","BCAS3","ADK","EIF2B2","FER","PSMA3-AS1","MAP1S","RNF38","ITIH3","HMGCR","RBM24","PHACTR1","MRAS","ZSCAN31","NBEAL1","PIGW","DBN1","NRP2","TWIST1","KCNE2","R3HDM2","KIAA0753","PDLIM7","CD300LG","UBA5","HEATR5B","ITIH4","RBM23","NFAT5","SLC22A5","NR3C1","ST3GAL3","PDXDC2P","UBN1","C9orf72","MIA3","NFU1"],["8_143155464_145078481.L1","22_23370460_24588236.L3,22_23370460_24588236.L1","6_13209156_14802693.L2,6_13209156_14802693.L1","2_28375910_28994693.L1","19_55216712_57009967.L1","17_36141651_38653091.L1","19_40478694_41625199.L5","20_63558827_64333810.L3,20_63558827_64333810.L2","2_151630268_153148542.L1,L4,2_151630268_153148542.L2,2_151630268_153148542.L3","12_55272053_57155077.L3,12_55272053_57155077.L2","15_73336373_76106283.L5,15_73336373_76106283.L1","9_119498019_122109043.L3,9_119498019_122109043.L1","7_99117851_100599028.L1","2_160913222_162647041.L2,2_160913222_162647041.L3","1_87662948_89600744.L3,1_87662948_89600744.L1","6_33268720_35487979.L3,6_33268720_35487979.L1","16_29025292_31371622.L2,L3","4_700926_1476986.L2,4_700926_1476986.L3","1_154797927_156366342.L3","6_42070983_43788432.L3","17_21387045_29007226.L1","7_151014417_152552721.L2","10_102620653_104935290.L3,10_102620653_104935290.L4","12_47321010_48608083.L3,12_47321010_48608083.L1","17_29007226_31459473.L3,17_29007226_31459473.L4","5_137040361_139885487.L3,L1","1_112730684_114331223.L3","7_139059933_140233377.L1","15_89932319_91621162.L1","17_59410151_61235394.L3","10_73662792_76947056.L1","14_72422907_75978424.L3","5_107928495_109298233.L3","14_57014544_58981618.L3","19_16263605_18299052.L3","9_34642246_36743286.L3","3_51797999_54047363.L4,3_51797999_54047363.L5","5_74463501_76503041.L2","6_14802693_17386174.L3","6_11790583_13209156.L3","3_137652241_140235755.L5","6_28050041_28949831.L3","2_201953914_204934518.L3","17_36141651_38653091.L2","5_176023592_177824506.L5","2_204934518_205870980.L5","7_16862445_19441924.L4","21_33853161_35152076.L4","12_57155077_58914885.L3","17_5838014_7414079.L5,17_5838014_7414079.L1","5_176023592_177824506.L2","17_43694719_44979537.L3","3_132117672_133533329.L3","2_35896940_37905569.L5","3_51797999_54047363.L1","14_22549721_24435917.L2","16_68807460_71020125.L1","5_130183332_132803957.L2","5_141266403_143601683.L3","1_43292786_44503511.L1","16_68807460_71020125.L3","16_3951195_5068344.L5","9_26111759_28224285.L3","1_222056878_224750818.L5","2_68912432_70528066.L2,L5"],[1,1,1,1,1,1,0.9999999999999702,0.9999999999878638,0.9999999894539756,0.999999896693455,0.999999600821371,0.9999987783429799,0.9999878785327186,0.999987326327597,0.9999750119622404,0.9999269071853689,0.9999042169041723,0.9998976706133919,0.999804273196344,0.9997979645513443,0.9997949836088496,0.9997620690596829,0.9996884095577925,0.9996162426304935,0.9995679523774115,0.9995078775111411,0.9994788368655895,0.9994073210410901,0.9994025445538619,0.9980726301053638,0.9963139408945981,0.9938242840070085,0.9929063410937783,0.9929063410909659,0.9929061525327728,0.9929003204166769,0.9924863983927366,0.9913223347856683,0.9892033834658673,0.9890645327694029,0.9890645322397972,0.9867960228776804,0.9860097595254618,0.9860097457127963,0.985786082678789,0.9857860825631236,0.9857860825331354,0.9857860823670773,0.9817106883154628,0.9815938379824477,0.9814666062314592,0.9772757889055549,0.977169867729341,0.9771051385473639,0.976694713732303,0.9766599678234883,0.9696333088156619,0.9696039023554563,0.9547347189321926,0.9547017954049223,0.9545987809907457,0.9317530276014033,0.9169365565498208,0.9157761161997844,0.8363459717186594],["8_143155464_145078481.L1","22_23370460_24588236.L3","6_13209156_14802693.L1",null,"19_55216712_57009967.L1","17_36141651_38653091.L1","19_40478694_41625199.L5","20_63558827_64333810.L3,20_63558827_64333810.L2",null,"12_55272053_57155077.L3,12_55272053_57155077.L2","15_73336373_76106283.L5",null,null,"2_160913222_162647041.L2",null,"6_33268720_35487979.L3","16_29025292_31371622.L2,L3","4_700926_1476986.L3","1_154797927_156366342.L3","6_42070983_43788432.L3","17_21387045_29007226.L1",null,"10_102620653_104935290.L3",null,"17_29007226_31459473.L3","5_137040361_139885487.L3,L1",null,null,null,null,"10_73662792_76947056.L1","14_72422907_75978424.L3",null,null,null,"9_34642246_36743286.L3",null,null,"6_14802693_17386174.L3","6_11790583_13209156.L3","3_137652241_140235755.L5",null,"2_201953914_204934518.L3","17_36141651_38653091.L2","5_176023592_177824506.L5","2_204934518_205870980.L5","7_16862445_19441924.L4","21_33853161_35152076.L4",null,null,null,null,null,null,null,null,null,null,"5_141266403_143601683.L3",null,null,null,"9_26111759_28224285.L3",null,null],[1,1,1,null,1,1,0.9999999999999702,0.9999999999878638,null,0.999999896693455,0.985786082666402,null,null,0.8597535393992268,null,0.1325428075524505,0.9999042169041723,0.9979510542956019,0.999804273196344,0.9997979645513443,0.9997949836088496,null,0.992815567911065,null,0.9857860826293687,0.9995078775111411,null,null,null,null,0.9963139408945981,0.9938242840070085,null,null,null,0.9929003204166769,null,null,0.9892033834658673,0.9890645327694029,0.9890645322397972,null,0.9860097595254618,0.9860097457127963,0.985786082678789,0.9857860825631236,0.9857860825331354,0.9857860823670773,null,null,null,null,null,null,null,null,null,null,0.9547347189321926,null,null,null,0.9169365565498208,null,null],[null,"22_23370460_24588236.L1","6_13209156_14802693.L2","2_28375910_28994693.L1",null,null,null,null,"2_151630268_153148542.L1,L4,2_151630268_153148542.L2,2_151630268_153148542.L3",null,"15_73336373_76106283.L1","9_119498019_122109043.L3,9_119498019_122109043.L1","7_99117851_100599028.L1","2_160913222_162647041.L3,2_160913222_162647041.L2","1_87662948_89600744.L3,1_87662948_89600744.L1","6_33268720_35487979.L1",null,"4_700926_1476986.L2",null,null,null,"7_151014417_152552721.L2","10_102620653_104935290.L4","12_47321010_48608083.L3,12_47321010_48608083.L1","17_29007226_31459473.L4",null,"1_112730684_114331223.L3","7_139059933_140233377.L1","15_89932319_91621162.L1","17_59410151_61235394.L3",null,null,"5_107928495_109298233.L3","14_57014544_58981618.L3","19_16263605_18299052.L3",null,"3_51797999_54047363.L4,3_51797999_54047363.L5","5_74463501_76503041.L2",null,null,null,"6_28050041_28949831.L3",null,null,null,null,null,null,"12_57155077_58914885.L3","17_5838014_7414079.L5,17_5838014_7414079.L1","5_176023592_177824506.L2","17_43694719_44979537.L3","3_132117672_133533329.L3","2_35896940_37905569.L5","3_51797999_54047363.L1","14_22549721_24435917.L2","16_68807460_71020125.L1","5_130183332_132803957.L2",null,"1_43292786_44503511.L1","16_68807460_71020125.L3","16_3951195_5068344.L5",null,"1_222056878_224750818.L5","2_68912432_70528066.L2,L5"],[null,0.1479323634938977,0.9764192155568641,1,null,null,null,null,0.9999999894539756,null,0.9999719163535501,0.9999987783429799,0.9999878785327186,0.998215141551373,0.9999750119622404,0.9999157389952295,null,0.9500575411107801,null,null,null,0.9997620690596829,0.9566297741630188,0.9996162426304935,0.9696039021950996,null,0.9994788368655895,0.9994073210410901,0.9994025445538619,0.9980726301053638,null,null,0.9929063410937783,0.9929063410909659,0.9929061525327728,null,0.9924863983927366,0.9913223347856683,null,null,null,0.9867960228776804,null,null,null,null,null,null,0.9817106883154628,0.9815938379824477,0.9814666062314592,0.9772757889055549,0.977169867729341,0.9771051385473639,0.976694713732303,0.9766599678234883,0.9696333088156619,0.9696039023554563,null,0.9547017954049223,0.9545987809907457,0.9317530276014033,null,0.9157761161997844,0.8363459717186594],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene_name<\/th>\n      <th>combined_cs_id<\/th>\n      <th>combined_pip<\/th>\n      <th>expression_cs_id<\/th>\n      <th>expression_pip<\/th>\n      <th>splicing_cs_id<\/th>\n      <th>splicing_pip<\/th>\n      <th>stability_cs_id<\/th>\n      <th>stability_pip<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[3,5,7,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>We found 65 genes that <code>combined_pip &gt; 0.8</code>. The results seemed reasonable, and we found many genes were consistent with no LD version, like “BOP1”, “TRMT61B”, “TBC1D7”, etc.</p>
+</div>
+<div id="locus-plots" class="section level3">
+<h3>Locus plots</h3>
+<p>Here we created a locus plot for region “8_143155464_145078481” containing the gene BOP1.</p>
+<pre class="r"><code>ens_db &lt;- EnsDb.Hsapiens.v86
+make_locusplot(finemap_res = finemap_res,
+               region_id = &quot;8_143155464_145078481&quot;,
+               ens_db = ens_db,
+               weights = overall_weights,
+               highlight_pip = 0.8,
+               filter_protein_coding_genes = TRUE,
+               filter_cs = TRUE,
+               color_pval_by = &quot;cs&quot;,
+               color_pip_by = &quot;cs&quot;)</code></pre>
+<pre><code>2025-07-01 03:04:43 INFO::Limit to protein coding genes
+2025-07-01 03:04:43 INFO::focal id: ENSG00000261236.7|Tibial_expression
+2025-07-01 03:04:43 INFO::focal molecular trait: BOP1 Tibial expression
+2025-07-01 03:04:43 INFO::Range of locus: chr8:143155364-145075941</code></pre>
+<pre><code>chromosome 8, position 143155364 to 145075941</code></pre>
+<pre><code>5281 SNPs/datapoints</code></pre>
+<pre><code>2025-07-01 03:04:43 INFO::focal molecular trait QTL positions: 144280310,144313067
+2025-07-01 03:04:43 INFO::Limit PIPs to credible sets</code></pre>
+<pre><code>Warning: ggrepel: 713 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/CAD_cTWAS_LD_525.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The top one shows -log10(p-value) of the association of variants (from CAD GWAS) and molecular traits (from the package computed z-scores) with the phenotype.</p>
+<p>The next track shows the PIPs of variants and molecular traits. By default, we only show PIPs of molecular traits and variants in the credible set(s) (filter_cs = TRUE).</p>
+<p>The next track shows the QTLs of the focal gene.</p>
+<p>The bottom is the gene track.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1205,77 +1270,80 @@ locale:
 [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
 
 other attached packages:
-[1] ggplot2_3.4.3     ctwas_0.5.26      data.table_1.14.8 workflowr_1.7.1  
+ [1] EnsDb.Hsapiens.v86_2.99.0 ensembldb_2.22.0         
+ [3] AnnotationFilter_1.22.0   GenomicFeatures_1.50.4   
+ [5] AnnotationDbi_1.60.2      Biobase_2.58.0           
+ [7] GenomicRanges_1.50.2      GenomeInfoDb_1.34.9      
+ [9] IRanges_2.32.0            S4Vectors_0.36.2         
+[11] BiocGenerics_0.44.0       enrichR_3.2              
+[13] ggplot2_3.4.3             ctwas_0.5.26             
+[15] data.table_1.14.8         workflowr_1.7.1          
 
 loaded via a namespace (and not attached):
   [1] colorspace_2.1-0            rjson_0.2.21               
   [3] ellipsis_0.3.2              rprojroot_2.0.3            
   [5] XVector_0.38.0              locuszoomr_0.3.5           
-  [7] GenomicRanges_1.50.2        fs_1.5.2                   
-  [9] rstudioapi_0.14             farver_2.1.1               
- [11] DT_0.22                     ggrepel_0.9.3              
- [13] bit64_4.0.5                 AnnotationDbi_1.60.2       
- [15] fansi_1.0.4                 xml2_1.3.3                 
- [17] codetools_0.2-18            logging_0.10-108           
- [19] cachem_1.0.8                knitr_1.42                 
- [21] jsonlite_1.8.7              Rsamtools_2.14.0           
- [23] dbplyr_2.3.2                png_0.1-7                  
- [25] readr_2.1.4                 compiler_4.2.0             
- [27] httr_1.4.7                  Matrix_1.6-4               
- [29] fastmap_1.1.1               lazyeval_0.2.2             
- [31] cli_3.6.2                   later_1.3.0                
- [33] htmltools_0.5.7             prettyunits_1.1.1          
- [35] tools_4.2.0                 gtable_0.3.4               
- [37] glue_1.6.2                  GenomeInfoDbData_1.2.9     
- [39] dplyr_1.1.3                 rappdirs_0.3.3             
- [41] Rcpp_1.0.11                 Biobase_2.58.0             
- [43] jquerylib_0.1.4             vctrs_0.6.3                
- [45] Biostrings_2.66.0           rtracklayer_1.58.0         
- [47] crosstalk_1.2.0             xfun_0.40                  
- [49] stringr_1.5.0               ps_1.7.0                   
- [51] irlba_2.3.5                 lifecycle_1.0.4            
- [53] restfulr_0.0.15             ensembldb_2.22.0           
- [55] XML_3.99-0.9                getPass_0.2-2              
- [57] zlibbioc_1.44.0             zoo_1.8-11                 
- [59] scales_1.2.1                gggrid_0.2-0               
- [61] hms_1.1.3                   promises_1.2.0.1           
- [63] MatrixGenerics_1.10.0       ProtGenerics_1.30.0        
- [65] parallel_4.2.0              SummarizedExperiment_1.28.0
- [67] AnnotationFilter_1.22.0     LDlinkR_1.3.0              
- [69] yaml_2.3.7                  curl_4.3.2                 
- [71] memoise_2.0.1               sass_0.4.1                 
- [73] biomaRt_2.54.1              stringi_1.7.12             
- [75] RSQLite_2.3.1               highr_0.9                  
- [77] S4Vectors_0.36.2            BiocIO_1.8.0               
- [79] GenomicFeatures_1.50.4      BiocGenerics_0.44.0        
- [81] filelock_1.0.2              BiocParallel_1.32.6        
- [83] GenomeInfoDb_1.34.9         rlang_1.1.1                
- [85] pkgconfig_2.0.3             matrixStats_1.2.0          
- [87] bitops_1.0-7                evaluate_0.15              
- [89] lattice_0.20-45             purrr_1.0.2                
- [91] labeling_0.4.3              GenomicAlignments_1.34.1   
- [93] htmlwidgets_1.6.2           cowplot_1.1.1              
- [95] bit_4.0.5                   processx_3.5.3             
- [97] tidyselect_1.2.0            magrittr_2.0.3             
- [99] AMR_3.0.0                   R6_2.5.1                   
-[101] IRanges_2.32.0              generics_0.1.3             
-[103] DelayedArray_0.24.0         DBI_1.1.3                  
-[105] withr_2.5.0                 pgenlibr_0.3.6             
-[107] pillar_1.9.0                whisker_0.4                
-[109] KEGGREST_1.38.0             RCurl_1.98-1.12            
-[111] mixsqp_0.3-54               tibble_3.2.1               
-[113] crayon_1.5.2                utf8_1.2.3                 
-[115] BiocFileCache_2.6.1         plotly_4.10.0              
-[117] tzdb_0.4.0                  rmarkdown_2.21             
-[119] progress_1.2.2              grid_4.2.0                 
-[121] blob_1.2.4                  callr_3.7.0                
-[123] git2r_0.30.1                digest_0.6.33              
-[125] tidyr_1.3.0                 httpuv_1.6.5               
-[127] stats4_4.2.0                munsell_0.5.0              
-[129] viridisLite_0.4.2           bslib_0.3.1                </code></pre>
+  [7] fs_1.5.2                    rstudioapi_0.14            
+  [9] farver_2.1.1                DT_0.22                    
+ [11] ggrepel_0.9.3               bit64_4.0.5                
+ [13] fansi_1.0.4                 xml2_1.3.3                 
+ [15] codetools_0.2-18            logging_0.10-108           
+ [17] cachem_1.0.8                knitr_1.42                 
+ [19] jsonlite_1.8.7              Rsamtools_2.14.0           
+ [21] dbplyr_2.3.2                png_0.1-7                  
+ [23] readr_2.1.4                 compiler_4.2.0             
+ [25] httr_1.4.7                  Matrix_1.6-4               
+ [27] fastmap_1.1.1               lazyeval_0.2.2             
+ [29] cli_3.6.2                   later_1.3.0                
+ [31] htmltools_0.5.7             prettyunits_1.1.1          
+ [33] tools_4.2.0                 gtable_0.3.4               
+ [35] glue_1.6.2                  GenomeInfoDbData_1.2.9     
+ [37] dplyr_1.1.3                 rappdirs_0.3.3             
+ [39] Rcpp_1.0.11                 jquerylib_0.1.4            
+ [41] vctrs_0.6.3                 Biostrings_2.66.0          
+ [43] rtracklayer_1.58.0          crosstalk_1.2.0            
+ [45] xfun_0.40                   stringr_1.5.0              
+ [47] ps_1.7.0                    irlba_2.3.5                
+ [49] lifecycle_1.0.4             restfulr_0.0.15            
+ [51] WriteXLS_6.7.0              XML_3.99-0.9               
+ [53] getPass_0.2-2               zlibbioc_1.44.0            
+ [55] zoo_1.8-11                  scales_1.2.1               
+ [57] gggrid_0.2-0                hms_1.1.3                  
+ [59] promises_1.2.0.1            MatrixGenerics_1.10.0      
+ [61] ProtGenerics_1.30.0         parallel_4.2.0             
+ [63] SummarizedExperiment_1.28.0 LDlinkR_1.3.0              
+ [65] yaml_2.3.7                  curl_4.3.2                 
+ [67] memoise_2.0.1               sass_0.4.1                 
+ [69] biomaRt_2.54.1              stringi_1.7.12             
+ [71] RSQLite_2.3.1               highr_0.9                  
+ [73] BiocIO_1.8.0                filelock_1.0.2             
+ [75] BiocParallel_1.32.6         rlang_1.1.1                
+ [77] pkgconfig_2.0.3             matrixStats_1.2.0          
+ [79] bitops_1.0-7                evaluate_0.15              
+ [81] lattice_0.20-45             purrr_1.0.2                
+ [83] labeling_0.4.3              GenomicAlignments_1.34.1   
+ [85] htmlwidgets_1.6.2           cowplot_1.1.1              
+ [87] bit_4.0.5                   processx_3.5.3             
+ [89] tidyselect_1.2.0            magrittr_2.0.3             
+ [91] AMR_3.0.0                   R6_2.5.1                   
+ [93] generics_0.1.3              DelayedArray_0.24.0        
+ [95] DBI_1.1.3                   withr_2.5.0                
+ [97] pgenlibr_0.3.6              pillar_1.9.0               
+ [99] whisker_0.4                 KEGGREST_1.38.0            
+[101] RCurl_1.98-1.12             mixsqp_0.3-54              
+[103] tibble_3.2.1                crayon_1.5.2               
+[105] utf8_1.2.3                  BiocFileCache_2.6.1        
+[107] plotly_4.10.0               tzdb_0.4.0                 
+[109] rmarkdown_2.21              progress_1.2.2             
+[111] grid_4.2.0                  blob_1.2.4                 
+[113] callr_3.7.0                 git2r_0.30.1               
+[115] digest_0.6.33               tidyr_1.3.0                
+[117] httpuv_1.6.5                munsell_0.5.0              
+[119] viridisLite_0.4.2           bslib_0.3.1                </code></pre>
 </div>
 </div>
 </div>
