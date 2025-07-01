@@ -366,7 +366,7 @@ ggplot(data, aes(x = "", y = percentage, fill = category)) +
 
 This step was to compare the Z-scores and fine-mapping PIPs. We generally expect high PIP molecular traits to have high Z-scores.
 
-In this case, we could see all of the points with high abs(Z-score) had high PIPs, except 1 point(?). 
+In this case, we could see all of the points with high abs(Z-score) had high PIPs, except 1 point(Tibial expression, z-score = -2.65, PIP = 0.99). 
 
 ```{r}
 ggplot(data = finemap_res[finemap_res$type!="SNP",], aes(x = abs(z), y = susie_pip)) +
