@@ -24,7 +24,8 @@ library(data.table)
 library(ctwas)
 library(ggplot2)
 library(workflowr)
-# library(EnsDb.Hsapiens.v86)
+library(enrichR)
+library(EnsDb.Hsapiens.v86)
 ```
 
 
@@ -419,4 +420,36 @@ DT::datatable(combined_pip_by_type_0.8,caption = htmltools::tags$caption(style =
 ```
 
 
+We found 65 genes that `combined_pip > 0.8`. The results seemed reasonable, and we found many genes were consistent with no LD version, like "BOP1", "TRMT61B", "TBC1D7", etc.  
+
+
+### Locus plots
+
+Here we created a locus plot for region "8_143155464_145078481" containing the gene BOP1.
+
+```{r}
+ens_db <- EnsDb.Hsapiens.v86
+make_locusplot(finemap_res = finemap_res,
+               region_id = "8_143155464_145078481",
+               ens_db = ens_db,
+               weights = overall_weights,
+               highlight_pip = 0.8,
+               filter_protein_coding_genes = TRUE,
+               filter_cs = TRUE,
+               color_pval_by = "cs",
+               color_pip_by = "cs")
+
+
+
+```
+
+
+
+The top one shows -log10(p-value) of the association of variants (from CAD GWAS) and molecular traits (from the package computed z-scores) with the phenotype.
+
+The next track shows the PIPs of variants and molecular traits. By default, we only show PIPs of molecular traits and variants in the credible set(s) (filter_cs = TRUE).
+
+The next track shows the QTLs of the focal gene.
+
+The bottom is the gene track.
 
