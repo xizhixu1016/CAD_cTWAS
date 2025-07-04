@@ -453,3 +453,71 @@ The next track shows the QTLs of the focal gene.
 
 The bottom is the gene track.
 
+
+
+### Gene set enrichment analysis
+
+We also performed gene set enrichment analysis to check if the genes we found related to biological pathways or functions. 
+
+```{r}
+dbs <- c("GO_Biological_Process_2021", "GO_Cellular_Component_2021", "GO_Molecular_Function_2021")
+genes <- combined_pip_by_type$gene_name[combined_pip_by_type$combined_pip >0.8]
+sprintf("The number of genes used in enrichment analysis = %s", length(genes))
+
+GO_enrichment <- enrichr(genes, dbs)
+
+```
+
+**Biological process**
+
+```{r}
+db <- "GO_Biological_Process_2021"
+df <- GO_enrichment[[db]]
+print(plotEnrich(GO_enrichment[[db]]))
+
+df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")]
+
+DT::datatable(df,caption = htmltools::tags$caption( 
+  style = 'caption-side: topleft; text-align = left; color:black;',
+  'Enriched pathways from GO_Biological_Process_2021'),
+  options = list(pageLength = 5) )
+
+
+```
+
+
+**Cellular component**
+
+```{r}
+db <- "GO_Cellular_Component_2021"
+df <- GO_enrichment[[db]]
+print(plotEnrich(GO_enrichment[[db]]))
+
+df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")]
+
+DT::datatable(df,caption = htmltools::tags$caption( 
+  style = 'caption-side: topleft; text-align = left; color:black;',
+  'Enriched pathways from GO_Cellular_Component_2021'),
+  options = list(pageLength = 5) )
+
+
+
+```
+
+
+**Molecular function**
+
+```{r}
+db <- "GO_Molecular_Function_2021"
+df <- GO_enrichment[[db]]
+print(plotEnrich(GO_enrichment[[db]]))
+
+df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")]
+
+DT::datatable(df,caption = htmltools::tags$caption( 
+  style = 'caption-side: topleft; text-align = left; color:black;',
+  'Enriched pathways from GO_Molecular_Function_2021'),
+  options = list(pageLength = 5) )
+
+```
+
