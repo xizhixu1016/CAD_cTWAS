@@ -306,7 +306,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-07-03
+<strong>Last updated:</strong> 2025-07-27
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -337,16 +337,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree21e29bc6d9fa3fee7b2bf14da661eade87210fb6targetblank21e29bca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/21e29bc6d9fa3fee7b2bf14da661eade87210fb6" target="_blank">21e29bc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStreef7b7e65ab0b24204e27b8c4a5006828f9bdb1fe4targetblankf7b7e65a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/f7b7e65ab0b24204e27b8c4a5006828f9bdb1fe4" target="_blank">f7b7e65</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStree21e29bc6d9fa3fee7b2bf14da661eade87210fb6targetblank21e29bca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomxizhixu1016CADcTWAStreef7b7e65ab0b24204e27b8c4a5006828f9bdb1fe4targetblankf7b7e65a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/21e29bc6d9fa3fee7b2bf14da661eade87210fb6" target="_blank">21e29bc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/xizhixu1016/CAD_cTWAS/tree/f7b7e65ab0b24204e27b8c4a5006828f9bdb1fe4" target="_blank">f7b7e65</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -359,6 +359,7 @@ Untracked files:
     Untracked:  TRMT61B.png
     Untracked:  ZNHIT3.png
     Untracked:  all_artery_weights.RData
+    Untracked:  analysis/test_novel_genes.Rmd
     Untracked:  aorta_weights.RData
     Untracked:  biological_process_enrichment.png
     Untracked:  bubble_plot.png
@@ -372,6 +373,7 @@ Untracked files:
     Untracked:  ctwas_workflow.png
     Untracked:  finemap_merged_region_res.RData
     Untracked:  finemap_noLD_res.RData
+    Untracked:  gene_assessment_filter.RData
     Untracked:  heritability.png
     Untracked:  molecular_function_enrich.png
     Untracked:  res.RData
@@ -420,6 +422,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/f7b7e65ab0b24204e27b8c4a5006828f9bdb1fe4/analysis/index.Rmd" target="_blank">f7b7e65</a>
+</td>
+<td>
+Xizhi
+</td>
+<td>
+2025-07-27
+</td>
+<td>
+Add a new page for cTWAS
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/03b997f8bc5402019c200ff2915bf68c70e7c876/docs/index.html" target="_blank">03b997f</a>
+</td>
+<td>
+Xizhi
+</td>
+<td>
+2025-07-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -904,7 +940,7 @@ Start workflowr project.
 </div>
 </div>
 <p>Welcome to my research website. My first analysis: <a href="CAD_cTWAS_noLD.html">CAD_cTWAS_noLD</a>. I also created a separate page to check whether novel genes are discovered: <a href="check_novel_genes.html">check_novel_genes</a>.</p>
-<p>The newest LD version of CAD cTWAS is here: <a href="CAD_cTWAS_LD_525.html">CAD_cTWAS_LD_525</a></p>
+<p>The newest LD version of CAD cTWAS is here: <a href="CAD_cTWAS_LD_525.html">CAD_cTWAS_LD_525</a>. Among all the genes identified by cTWAS analysis, I created a separate page to focus part of genes with high relevance to coronary artery disease (CAD):<a href="test_novel_genes.html">test_novel_genes</a></p>
 <p>There is also a separate page for main plots: <a href="Images_page.html">Images_page</a>.</p>
 
 
