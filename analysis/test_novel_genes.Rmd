@@ -1,0 +1,28 @@
+---
+title: "Test Novel Genes"
+author: "Xizhi Xu"
+date: '2025-07-27'
+output: html_document
+---
+
+
+### Gene Selection and Novelty Assessment
+
+From the initial 39 genes identified in the cTWAS analysis, I selected 21 genes with high relevance to coronary artery disease (CAD), based on evidence from GeneCards, literature searches, and AI-assisted prioritization (ChatGPT). This page evaluates whether these genes represent novel findings in CAD research.
+
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(tidyverse)
+
+```
+
+
+```{r}
+load("gene_assessment_filter.RData")
+DT::datatable(gene_assessment_filter,caption = htmltools::tags$caption(style = 'caption-side: topleft; text-align = left; color:black;','Summary of highly plausible genes'),
+              options = list(pageLength = 10))
+```
+
+
+
