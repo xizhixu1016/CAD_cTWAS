@@ -10,6 +10,6 @@ editor_options:
 
 Welcome to my research website. My first analysis: [CAD_cTWAS_noLD](CAD_cTWAS_noLD.html). I also created a separate page to check whether novel genes are discovered: [check_novel_genes](check_novel_genes.html). 
 
-The newest LD version of CAD cTWAS is here: [CAD_cTWAS_LD_525](CAD_cTWAS_LD_525.html)
+The newest LD version of CAD cTWAS is here: [CAD_cTWAS_LD_525](CAD_cTWAS_LD_525.html). Among all the genes identified by cTWAS analysis, I created a separate page to focus part of genes with high relevance to coronary artery disease (CAD):[test_novel_genes](test_novel_genes.html) 
 
 There is also a separate page for main plots: [Images_page](Images_page.html).
