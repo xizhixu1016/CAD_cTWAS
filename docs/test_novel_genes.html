@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Xizhi Xu" />
 
+<meta name="date" content="2025-07-27" />
 
-<title>Home</title>
+<title>Test Novel Genes</title>
 
 <script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,9 +31,20 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.22/datatables.js"></script>
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
 
@@ -231,6 +244,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -238,6 +314,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -281,7 +367,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Test Novel Genes</h1>
+<h4 class="author">Xizhi Xu</h4>
+<h4 class="date">2025-07-27</h4>
 
 </div>
 
@@ -309,7 +397,7 @@ $(document).ready(function () {
 <strong>Last updated:</strong> 2025-07-27
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>CAD_cTWAS/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -331,6 +419,66 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20241004code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20241004)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20241004code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20241004)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -397,7 +545,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/test_novel_genes.Rmd</code>) and HTML (<code>docs/test_novel_genes.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -423,44 +571,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/1b6773be5e576a8a796649fd30552c767fed398a/docs/index.html" target="_blank">1b6773b</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-07-27
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/8f40a7926152aefb8bdec67bfce6e6349df51090/docs/index.html" target="_blank">8f40a79</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-07-27
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/f7b7e65ab0b24204e27b8c4a5006828f9bdb1fe4/analysis/index.Rmd" target="_blank">f7b7e65</a>
+<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/aa23875970627e5b30b861180b50513a5cdeab01/analysis/test_novel_genes.Rmd" target="_blank">aa23875</a>
 </td>
 <td>
 Xizhi
@@ -472,499 +586,6 @@ Xizhi
 Add a new page for cTWAS
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/03b997f8bc5402019c200ff2915bf68c70e7c876/docs/index.html" target="_blank">03b997f</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-07-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/0ffa5c8a834e5e542c94f12d21e528efa44baf0e/docs/index.html" target="_blank">0ffa5c8</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-07-01
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/399fa1f3a9070077afc481085131bbc3ed326324/docs/index.html" target="_blank">399fa1f</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-06-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/2dc959285f2271cae49702f8e843e2678327dabb/docs/index.html" target="_blank">2dc9592</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-06-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/98f12a8d5a47ff66b6f9c85918ef1154f2f4504c/analysis/index.Rmd" target="_blank">98f12a8</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-06-30
-</td>
-<td>
-Publish the updated version of cTWAS
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/af3feba1f30e77dc5e2920937bf88b212cb1d08b/docs/index.html" target="_blank">af3feba</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-03-20
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/b095707a89bcd3141ca5a2f9ae3e9236c2c1683a/docs/index.html" target="_blank">b095707</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-03-20
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/ff327ff6871f5e46d2d2db7b53cde5c165b4c45d/docs/index.html" target="_blank">ff327ff</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-03-20
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/fa961d1645b233e6c5905b3d4b57c43ef4fe47fe/docs/index.html" target="_blank">fa961d1</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-02-24
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/8742f273a47600e6752fe483dbd25d11c3ef1343/docs/index.html" target="_blank">8742f27</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-02-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/75578f6ba84353a880d32bad2c8e92239decec55/docs/index.html" target="_blank">75578f6</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-02-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/1e594edbcf202c40996ad18b48bfd2a60bb45104/docs/index.html" target="_blank">1e594ed</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-02-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/a7f7d6f0520f00f8103dd36a354f1a2fcae6ee97/analysis/index.Rmd" target="_blank">a7f7d6f</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-02-23
-</td>
-<td>
-Create the image page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/f5a74767b74e402d58257806b51753c1998cb085/docs/index.html" target="_blank">f5a7476</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2025-02-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/5eb792b29fd236a24fc3b997bcd900edf8e13381/docs/index.html" target="_blank">5eb792b</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-11-09
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/3b6959c3be8b4191bb8d39d448dac1159850f4c8/analysis/index.Rmd" target="_blank">3b6959c</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-11-09
-</td>
-<td>
-Create the LD version cTWAS page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/dc0d1f164a79935b46331f3d721cc26bb2f06b36/docs/index.html" target="_blank">dc0d1f1</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-28
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/3fe35939dbcfc1468cf5f233dcea463487f7d66d/docs/index.html" target="_blank">3fe3593</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-28
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/fbbaca10280aff266f7a1366971bfc4d86028a99/docs/index.html" target="_blank">fbbaca1</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-28
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/77597f20f12a9e16f0993f18cf82bd5ab5b3d969/analysis/index.Rmd" target="_blank">77597f2</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-28
-</td>
-<td>
-Create a new page to check whether novel genes are discovered
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/eaaf035d1a4c2b29a4ee6cf8f81c8ebb912201f1/docs/index.html" target="_blank">eaaf035</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/fe8c98f4a75032fb6cb7ece567b00104b9dbaec5/docs/index.html" target="_blank">fe8c98f</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-21
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/a35e278297c8873f422c14205a576f00697948bb/docs/index.html" target="_blank">a35e278</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-15
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/5b1f986a50470ba73ea2c2f212f0def4e63c3255/docs/index.html" target="_blank">5b1f986</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-09
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/7dabac8e52c7dc2c3ba31c6916c635d385282c73/docs/index.html" target="_blank">7dabac8</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/ea971451448e5447f589525fc1c22ea0ff3dee37/analysis/index.Rmd" target="_blank">ea97145</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-04
-</td>
-<td>
-Add my first analysis
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/2c5fce1d09b7be57bcff0ec4d3a966b3c8506e77/docs/index.html" target="_blank">2c5fce1</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/xizhixu1016/CAD_cTWAS/69e4770e2733586fd6e78b822c31e2b1b3ed3c99/docs/index.html" target="_blank">69e4770</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/xizhixu1016/CAD_cTWAS/blob/66de5c19fa37f84362ac4b4a08ac8146024579c0/analysis/index.Rmd" target="_blank">66de5c1</a>
-</td>
-<td>
-Xizhi
-</td>
-<td>
-2024-10-04
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -972,9 +593,62 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Welcome to my research website. My first analysis: <a href="CAD_cTWAS_noLD.html">CAD_cTWAS_noLD</a>. I also created a separate page to check whether novel genes are discovered: <a href="check_novel_genes.html">check_novel_genes</a>.</p>
-<p>The newest LD version of CAD cTWAS is here: <a href="CAD_cTWAS_LD_525.html">CAD_cTWAS_LD_525</a>. Among all the genes identified by cTWAS analysis, I created a separate page to focus part of genes with high relevance to coronary artery disease (CAD):<a href="test_novel_genes.html">test_novel_genes</a></p>
-<p>There is also a separate page for main plots: <a href="Images_page.html">Images_page</a>.</p>
+<div id="gene-selection-and-novelty-assessment" class="section level3">
+<h3>Gene Selection and Novelty Assessment</h3>
+<p>From the initial 39 genes identified in the cTWAS analysis, I selected 21 genes with high relevance to coronary artery disease (CAD), based on evidence from GeneCards, literature searches, and AI-assisted prioritization (ChatGPT). This page evaluates whether these genes represent novel findings in CAD research.</p>
+<pre class="r"><code>load(&quot;gene_assessment_filter.RData&quot;)
+DT::datatable(gene_assessment_filter,caption = htmltools::tags$caption(style = &#39;caption-side: topleft; text-align = left; color:black;&#39;,&#39;Summary of highly plausible genes&#39;),
+              options = list(pageLength = 10))</code></pre>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-232a8e63d6aacd296363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-232a8e63d6aacd296363">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: topleft; text-align = left; color:black;\">Summary of highly plausible genes<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21"],["ARL6IP6","TRMT61B","UBQLN4","KDM3B","PHACTR1","FES","ITIH4","RBM24","NRP2","PTK7","CD300LG","UBA5","TGFB1","TBXAS1","ST3GAL3","UBN1","MRAS","MAP1S","C9orf72","NFU1","NBEAL1"],["Speculative","Speculative","Speculative","Speculative","Strong","Strong","Strong","Speculative","Strong","Strong","Strong","Speculative","Strong","Strong","Speculative","Speculative","Strong","Speculative","Strong","Speculative","Speculative"],["Yes","Yes","Yes","Yes","No","Yes","Yes","No","Yes","Yes","Yes","Yes","No","No","Yes","Yes","No","Yes","Yes","Yes","Yes"],["ER stress response; plausible but no direct CAD links","Mitochondrial tRNA methylation; oxidative stress link plausible","Autophagy/protein degradation; plausible but unverified in CAD","Histone demethylase; linked to obesity (indirect CAD risk)","GWAS locus (9p21); regulates VSMC contraction &amp; endothelial function","Tyrosine kinase; promotes leukocyte adhesion and plaque inflammation","Acute-phase protein; biomarker for plaque instability","RNA-binding protein; regulates cardiac development but limited atherosclerosis data","Neuropilin-2; regulates angiogenesis and macrophage trafficking in plaques","Pseudokinase regulating endothelial migration &amp; VEGF signaling; hypoxia-responsive","Adhesion molecule regulating leukocyte transendothelial migration; GWAS-linked to CAD","Ubiquitin-like modifier; plausible via ER stress but no direct CAD data","Central to fibrosis, plaque stability, and VSMC differentiation; GWAS-supported","Encodes thromboxane synthase; pro-thrombotic in plaques; drug target (aspirin inhibits)","Sialyltransferase; may affect leukocyte adhesion but limited CAD evidence","Chromatin remodeling (senescence link), no direct CAD evidence","GWAS locus (3q22); regulates VSMC proliferation","Autophagy regulator; plausible but unverified in CAD","GWAS locus (9p21.3); top CAD-associated region","Iron-sulfur cluster assembly; mitochondrial link plausible","Platelet α-granules; thrombosis link but limited CAD data"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Gene<\/th>\n      <th>CAD_Relevance<\/th>\n      <th>Novelty<\/th>\n      <th>Evidence<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Red Hat Enterprise Linux 8.4 (Ootpa)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.3.13-el8-x86_64/lib/libopenblas_skylakexp-r0.3.13.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.2 forcats_1.0.0   stringr_1.5.0   purrr_1.0.2    
+ [5] readr_2.1.4     tidyr_1.3.0     tibble_3.2.1    ggplot2_3.4.3  
+ [9] tidyverse_2.0.0 dplyr_1.1.3     workflowr_1.7.1
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.2.0  xfun_0.40         bslib_0.3.1       colorspace_2.1-0 
+ [5] vctrs_0.6.3       generics_0.1.3    htmltools_0.5.7   yaml_2.3.7       
+ [9] utf8_1.2.3        rlang_1.1.1       jquerylib_0.1.4   later_1.3.0      
+[13] pillar_1.9.0      glue_1.6.2        withr_2.5.0       lifecycle_1.0.4  
+[17] munsell_0.5.0     gtable_0.3.4      htmlwidgets_1.6.2 evaluate_0.15    
+[21] knitr_1.42        callr_3.7.0       tzdb_0.4.0        fastmap_1.1.1    
+[25] crosstalk_1.2.0   httpuv_1.6.5      ps_1.7.0          fansi_1.0.4      
+[29] Rcpp_1.0.11       DT_0.22           promises_1.2.0.1  scales_1.2.1     
+[33] jsonlite_1.8.7    fs_1.5.2          hms_1.1.3         digest_0.6.33    
+[37] stringi_1.7.12    processx_3.5.3    getPass_0.2-2     rprojroot_2.0.3  
+[41] grid_4.2.0        cli_3.6.2         tools_4.2.0       magrittr_2.0.3   
+[45] sass_0.4.1        whisker_0.4       pkgconfig_2.0.3   ellipsis_0.3.2   
+[49] timechange_0.2.0  rmarkdown_2.21    httr_1.4.7        rstudioapi_0.14  
+[53] R6_2.5.1          git2r_0.30.1      compiler_4.2.0   </code></pre>
+</div>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -992,6 +666,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -1024,6 +700,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
